@@ -16,84 +16,50 @@
     font-family:ui-monospace, Menlo, Monaco, "Cascadia Mono", monospace;
     display:flex; flex-direction:column; align-items:center; height:100dvh; overflow:hidden;
   }
-  body::after{ /* vignette over everything, purely cosmetic */
-    content:""; position:fixed; inset:0; pointer-events:none;
-    background:radial-gradient(ellipse at 50% 40%, transparent 55%, rgba(5,3,12,.55) 100%);
-  }
-  #stage{
-    width:100%; max-width:960px; position:relative; flex:0 0 auto;
-    aspect-ratio:16/9; background:#000;
-  }
-  canvas#scene{
-    width:100%; height:100%; display:block;
-    image-rendering:pixelated; image-rendering:crisp-edges;
-  }
-  #status{
-    width:100%; max-width:960px; padding:6px 14px; font-size:11px; color:var(--dim);
-    display:flex; justify-content:space-between; letter-spacing:.08em;
-  }
-  #status .r{cursor:pointer; user-select:none;}
-  #status .r:hover{color:var(--ink);}
-  #chat{
-    width:100%; max-width:960px; flex:1 1 auto; min-height:0;
-    display:flex; flex-direction:column; padding:0 10px 10px;
-  }
-  #log{
-    flex:1 1 auto; overflow-y:auto; display:flex; flex-direction:column; gap:8px;
-    padding:10px 4px; scrollbar-width:thin; scrollbar-color:var(--panel2) transparent;
-  }
+  body::after{ content:""; position:fixed; inset:0; pointer-events:none;
+    background:radial-gradient(ellipse at 50% 40%, transparent 58%, rgba(5,3,12,.5) 100%); }
+  #stage{ width:100%; max-width:960px; position:relative; flex:0 0 auto; aspect-ratio:16/9; background:#000; }
+  canvas#scene{ width:100%; height:100%; display:block; image-rendering:pixelated; image-rendering:crisp-edges; }
+  #status{ width:100%; max-width:960px; padding:6px 14px; font-size:11px; color:var(--dim);
+    display:flex; justify-content:space-between; letter-spacing:.08em; }
+  #status .r{cursor:pointer; user-select:none;} #status .r:hover{color:var(--ink);}
+  #chat{ width:100%; max-width:960px; flex:1 1 auto; min-height:0; display:flex; flex-direction:column; padding:0 10px 10px; }
+  #log{ flex:1 1 auto; overflow-y:auto; display:flex; flex-direction:column; gap:8px;
+    padding:10px 4px; scrollbar-width:thin; scrollbar-color:var(--panel2) transparent; }
   .msg{max-width:78%; padding:8px 12px; border-radius:4px; font-size:13px; line-height:1.55; white-space:pre-wrap;}
   .them{align-self:flex-start; background:var(--them); border-left:3px solid var(--accent2); color:var(--ink);}
   .me{align-self:flex-end; background:var(--me); border-right:3px solid var(--accent); color:#e8e2f7;}
   .sys{align-self:center; color:var(--dim); font-size:11px; font-style:italic; padding:2px 0;}
   #chips{display:flex; gap:8px; flex-wrap:wrap; padding:4px 4px 8px;}
-  .chip{
-    background:transparent; border:1px solid var(--accent2); color:var(--ink);
-    font:inherit; font-size:11.5px; padding:5px 10px; border-radius:3px; cursor:pointer;
-  }
+  .chip{ background:transparent; border:1px solid var(--accent2); color:var(--ink);
+    font:inherit; font-size:11.5px; padding:5px 10px; border-radius:3px; cursor:pointer; }
   .chip:hover{background:var(--panel2);}
   #bar{display:flex; gap:8px;}
-  #inp{
-    flex:1; background:var(--panel); border:1px solid #2c2350; color:var(--ink);
-    font:inherit; font-size:13px; padding:11px 12px; border-radius:4px; outline:none;
-  }
+  #inp{ flex:1; background:var(--panel); border:1px solid #2c2350; color:var(--ink);
+    font:inherit; font-size:13px; padding:11px 12px; border-radius:4px; outline:none; }
   #inp:focus{border-color:var(--accent2);}
-  #send{
-    background:var(--accent2); border:none; color:#0d0a1e; font:inherit; font-weight:700;
-    font-size:13px; padding:0 20px; border-radius:4px; cursor:pointer;
-  }
+  #send{ background:var(--accent2); border:none; color:#0d0a1e; font:inherit; font-weight:700;
+    font-size:13px; padding:0 20px; border-radius:4px; cursor:pointer; }
   #send:disabled{opacity:.35; cursor:default;}
 
-  /* ---------- intro overlay ---------- */
-  #intro{
-    position:fixed; inset:0; z-index:10; display:flex; flex-direction:column;
+  #intro{ position:fixed; inset:0; z-index:10; display:flex; flex-direction:column;
     align-items:center; justify-content:center; gap:26px; text-align:center;
-    background:
-      radial-gradient(ellipse at 50% 115%, rgba(255,150,90,.14), transparent 55%),
-      linear-gradient(180deg, #0b0817 0%, #17102e 60%, #241738 100%);
-  }
-  #intro h1{
-    font-size:52px; letter-spacing:.35em; margin-left:.35em; color:#ffd9a0; font-weight:400;
-    text-shadow:0 0 22px rgba(255,183,94,.45), 0 0 60px rgba(138,123,255,.25);
-  }
+    background: radial-gradient(ellipse at 50% 115%, rgba(255,150,90,.14), transparent 55%),
+      linear-gradient(180deg, #0b0817 0%, #17102e 60%, #241738 100%); }
+  #intro h1{ font-size:52px; letter-spacing:.35em; margin-left:.35em; color:#ffd9a0; font-weight:400;
+    text-shadow:0 0 22px rgba(255,183,94,.45), 0 0 60px rgba(138,123,255,.25); }
   #intro p{color:var(--dim); font-size:12.5px; max-width:420px; line-height:1.8; padding:0 20px;}
   #who{display:flex; gap:22px;}
-  .pick{
-    background:var(--panel); border:1px solid #2c2350; border-radius:6px; padding:14px 18px 10px;
+  .pick{ background:var(--panel); border:1px solid #2c2350; border-radius:6px; padding:14px 18px 10px;
     cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:8px;
-    color:var(--dim); font-size:11px; letter-spacing:.1em;
-  }
+    color:var(--dim); font-size:11px; letter-spacing:.1em; }
   .pick canvas{image-rendering:pixelated; width:64px; height:96px;}
   .pick.sel{border-color:var(--accent); color:var(--ink); box-shadow:0 0 18px rgba(255,183,94,.18);}
   #nameRow{display:flex; gap:8px; align-items:center;}
-  #nameInp{
-    background:var(--panel); border:1px solid #2c2350; color:var(--ink); font:inherit;
-    font-size:14px; padding:10px 12px; border-radius:4px; width:200px; text-align:center; outline:none;
-  }
-  #begin{
-    background:var(--accent); border:none; color:#241300; font:inherit; font-weight:700;
-    font-size:14px; letter-spacing:.15em; padding:12px 34px; border-radius:4px; cursor:pointer;
-  }
+  #nameInp{ background:var(--panel); border:1px solid #2c2350; color:var(--ink); font:inherit;
+    font-size:14px; padding:10px 12px; border-radius:4px; width:200px; text-align:center; outline:none; }
+  #begin{ background:var(--accent); border:none; color:#241300; font:inherit; font-weight:700;
+    font-size:14px; letter-spacing:.15em; padding:12px 34px; border-radius:4px; cursor:pointer; }
   #begin:hover{box-shadow:0 0 24px rgba(255,183,94,.4);}
   #introFoot{position:absolute; bottom:16px; font-size:10px; color:#4d4468; max-width:560px; padding:0 20px; line-height:1.7;}
   #introFoot a{color:#6c5fc7;}
@@ -117,7 +83,7 @@
   if things feel heavy for real, talk to someone you trust or a helpline (iCall: +91&nbsp;9152987821).</div>
 </div>
 
-<div id="stage"><canvas id="scene" width="320" height="180"></canvas></div>
+<div id="stage"><canvas id="scene" width="480" height="270"></canvas></div>
 <div id="status">
   <span id="stL">day 1</span>
   <span class="r" id="sndBtn">♪ sound: off</span>
@@ -134,13 +100,14 @@
 <script>
 "use strict";
 /* ============================================================
-   LEMON — a small room. single-file, no dependencies.
-   scene: 320x180 hand-drawn pixel art, palette lerps with hope.
-   brain: cloudflare worker proxy → groq/gemini free tiers.
+   LEMON v2 — "the living room". single file, no dependencies.
+   scene: 480x270, three cached layers, palette lerps cozy->golden.
+   130-action registry driven by the LLM + autonomous idle pool.
+   brain: cloudflare worker proxy -> groq/gemini free tiers.
    ============================================================ */
 const BRAIN = "https://lemon-brain.vaibhavpro9210.workers.dev/chat";
 
-/* ---------- tiny seeded rng (mulberry32) ---------- */
+/* ---------- seeded rng (mulberry32) ---------- */
 function rng(seed){ let a = seed>>>0; return function(){
   a |= 0; a = a + 0x6D2B79F5 | 0;
   let t = Math.imul(a ^ a>>>15, 1 | a);
@@ -148,485 +115,1136 @@ function rng(seed){ let a = seed>>>0; return function(){
   return ((t ^ t>>>14) >>> 0) / 4294967296; }; }
 function hashStr(s){ let h = 2166136261; for (let i=0;i<s.length;i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h>>>0; }
 
-/* ---------- save state ---------- */
-const SAVE_KEY = "lemon.v1";
+/* ---------- save state (v2, migrates v1) ---------- */
+const SAVE_KEY = "lemon.v2", OLD_KEY = "lemon.v1";
 let S = null;
 try { S = JSON.parse(localStorage.getItem(SAVE_KEY)); } catch(e){}
+if (!S){ // migrate a v1 save if present
+  try { const old = JSON.parse(localStorage.getItem(OLD_KEY));
+    if (old && old.name){ S = migrateV1(old); localStorage.setItem(SAVE_KEY, JSON.stringify(S)); } } catch(e){}
+}
+function migrateV1(o){ return { seed:o.seed||((Math.random()*1e9)|0), name:o.name, gender:o.gender, hope:o.hope||20,
+  firstDay:o.firstDay||today(), lastDay:o.lastDay||today(), dayNum:o.dayNum||1, history:o.history||[], won:!!o.won,
+  facts:[], propsSeen:{}, settings:{substances:true} }; }
 function persist(){ try { localStorage.setItem(SAVE_KEY, JSON.stringify(S)); } catch(e){} }
 function today(){ return new Date().toISOString().slice(0,10); }
+function newSave(name, gender){ return { seed:(Math.random()*1e9)|0, name, gender, hope:20,
+  firstDay:today(), lastDay:today(), dayNum:1, history:[], won:false,
+  facts:[], propsSeen:{}, settings:{substances:true} }; }
 
-/* ---------- palette: [low, bright] pairs, lerped by hope ---------- */
-function hex(c){ return [parseInt(c.slice(1,3),16), parseInt(c.slice(3,5),16), parseInt(c.slice(5,7),16)]; }
-function mix(a,b,t){ const A=hex(a),B=hex(b); return `rgb(${A.map((v,i)=>Math.round(v+(B[i]-v)*t)).join(",")})`; }
-const PAL = {
-  wall:      ["#241d3d","#4b3a63"],  wallLo:   ["#1b1530","#3a2d50"],
-  floor:     ["#2e2247","#59436b"],  floorLo:  ["#271d3c","#4a3759"],
-  rug:       ["#3a2c58","#6d5385"],  rugEdge:  ["#463368","#7d6096"],
-  bedFrame:  ["#4a3660","#6d5580"],  blanket:  ["#5a4a86","#8a76b8"],
-  blanket2:  ["#4e4076","#7b68a8"],  pillow:   ["#b8aed6","#e8e0f5"],
-  desk:      ["#503c5c","#7a5f80"],  deskLeg:  ["#3c2d48","#5c4763"],
-  door:      ["#3f3054","#6b527a"],  doorDark: ["#332645","#59436b"],
-  poster1:   ["#5c4a8a","#8a6fc0"],  poster2:  ["#7a4a6a","#c06f92"],
-  lampPole:  ["#584568","#7a6488"],  shade:    ["#c08a50","#ffb75e"],
-  pot:       ["#6e4b3a","#96684c"],  leaf:     ["#3f6b4f","#63b877"],
-  clothes:   ["#4d3f63","#6d5d85"],  skin:     ["#e8bd96","#f5cda6"],
-  win:       ["#171233","#8ab4d9"]
-};
-let pal = {}; // current mixed palette, rebuilt each frame
-
-/* ---------- state defaults ---------- */
-function newSave(name, gender){
-  return { seed: (Math.random()*1e9)|0, name, gender, hope: 20,
-           firstDay: today(), lastDay: today(), dayNum: 1,
-           history: [], won: false };
-}
-
-/* ---------- scene ---------- */
+/* ============================================================
+   RENDER CORE — 480x270, three offscreen layers.
+   bgLayer  : walls/floor/props/window-sky. re-render on cache-key change.
+   animLayer: cleared each frame — character, cat, particles, prop life.
+   fxLayer  : screen-space overlays (flash, vignette, letterbox).
+   composite: shake + zoom applied to (bg+anim), then fx on top.
+   ============================================================ */
+const W=480, H=270, FLOOR=198;
 const cv = document.getElementById("scene"), g = cv.getContext("2d");
-let T = 0;            // frame time (s)
-let hope01 = 0.2;     // eased display value of S.hope/100
-let moodyDay = false; // set on load()
-let winPhase = -1;    // -1: normal, >=0: cutscene t
-function px(x,y,w,h,c){ g.fillStyle=c; g.fillRect(x|0,y|0,w,h); }
+function mkLayer(){ const c=document.createElement("canvas"); c.width=W; c.height=H;
+  const x=c.getContext("2d"); x.imageSmoothingEnabled=false; return {c,x}; }
+const BG=mkLayer(), AN=mkLayer(), FX=mkLayer();
+g.imageSmoothingEnabled=false;
 
+let T=0, dt=0, lastTs=0;
+let hope01=0.2;                 // eased display value of hope/100
+let moodyDay=false;
+let winPhase=-1;                // -1 normal, >=0 cutscene seconds
+const fx = { shakeMag:0, shakeT:0, zoom:1, zoomTarget:1, flashA:0, flashCol:"255,224,150", vig:0, letterbox:0 };
+
+function px(ctx,x,y,w,h,c){ ctx.fillStyle=c; ctx.fillRect(x|0,y|0,Math.max(1,w|0),Math.max(1,h|0)); }
+function clamp(v,a,b){ return v<a?a:v>b?b:v; }
+function lerp(a,b,t){ return a+(b-a)*t; }
+
+/* ---------- dither: cached 2x2 checker patterns ---------- */
+const _pats = {};
+function pat(a,b){ const k=a+"|"+b; if(_pats[k]) return _pats[k];
+  const p=document.createElement("canvas"); p.width=2; p.height=2; const c=p.getContext("2d");
+  c.fillStyle=a; c.fillRect(0,0,2,2); c.fillStyle=b; c.fillRect(0,0,1,1); c.fillRect(1,1,1,1);
+  const pt=g.createPattern(p,"repeat"); _pats[k]=pt; return pt; }
+function dither(ctx,x,y,w,h,a,b){ ctx.save(); ctx.fillStyle=pat(a,b);
+  ctx.translate(x|0,y|0); ctx.fillRect(0,0,w,h); ctx.restore(); }
+
+/* ---------- palette: [low(dusk-cozy), high(golden)] lerped by hope ---------- */
+function hx(c){ return [parseInt(c.slice(1,3),16),parseInt(c.slice(3,5),16),parseInt(c.slice(5,7),16)]; }
+function mix(a,b,t){ const A=hx(a),B=hx(b); return `rgb(${A.map((v,i)=>Math.round(v+(B[i]-v)*t)).join(",")})`; }
+const PAL = {
+  wall:   ["#4c3d58","#8a6470"],  wallHi:["#5a4a66","#9a7280"],  wallLo:["#3c3048","#6e4e58"],
+  floor:  ["#6a5058","#a67a54"],  floorLo:["#54404a","#8a6444"],
+  rug:    ["#356a64","#4a8a84"],  rugEdge:["#7a4256","#c07a8e"],
+  bed:    ["#6a4a54","#9a6a5c"],  blanket:["#cc655a","#f0876a"], blanket2:["#b0504a","#d86a58"],
+  pillow: ["#ddceb2","#f5e8cc"],  desk:  ["#5a4656","#8a6858"],  deskLeg:["#42324a","#6a4c42"],
+  door:   ["#5a4250","#9a6a50"],  doorDk:["#442f42","#7a5240"],
+  lampPole:["#544860","#8a6c62"], shade: ["#d89a54","#ffd98a"],  pot:["#8a5440","#b8724e"], leaf:["#4a7a58","#6ec880"],
+  shelf:  ["#5a4452","#8a6450"],  crate:["#5e4640","#8a624c"],
+  win:    ["#141028","#8ab4d9"]
+};
+let P={};
+/* décor prints stay saturated (do NOT lerp) */
+const DECOR = { poster1:"#e0714a", poster2:"#3f9c94", poster1b:"#ffd06a", poster2b:"#f2e6c8",
+  fairy:["#ffb75e","#ff7aa8","#5ec8c0","#b58cff"], spines:["#c0563e","#4f8a86","#d9a441","#7a5aa8","#3f9c94","#c86a8a"],
+  rgb0:0 };
+
+/* ---------- particles (cap 120) ---------- */
+const PART=[]; const PCAP=120;
+function spawn(x,y,vx,vy,life,color,size,grav){ if(PART.length>=PCAP) PART.shift();
+  PART.push({x,y,vx,vy,life,max:life,color,size:size||1,grav:grav||0}); }
+function updateParticles(){ for(let i=PART.length-1;i>=0;i--){ const p=PART[i];
+  p.x+=p.vx*dt*60; p.y+=p.vy*dt*60; p.vy+=p.grav*dt*60; p.life-=dt;
+  if(p.life<=0){ PART.splice(i,1); continue; }
+  const a=clamp(p.life/p.max,0,1); AN.x.globalAlpha=a;
+  px(AN.x,p.x,p.y,p.size,p.size,p.color); AN.x.globalAlpha=1; } }
+
+/* ============================================================
+   WORLD STATE (props actions mutate) + coordinate maps
+   ============================================================ */
+const WORLD = { curtains:1, lampOn:true, consoleOn:false, tvState:"off", beers:2, fairyOn:true,
+  plantLeaves:2, rainOn:false, phoneOut:false, pizzaBox:true, laundry:1, fridgeOpen:false,
+  incense:false, vinyl:false, headphones:false, shoeMissing:true, version:0 };
+function bump(){ WORLD.version++; } // invalidate bg cache after a persistent prop change
+
+/* rects/points in 480x270 space. y for standing = feet baseline. */
+const R = {
+  bed:{x:8,y:150,w:118,h:44},  pillow:{x:14,y:150},
+  crate:{x:128,y:168,w:30,h:26},
+  window:{x:300,y:36,w:96,h:76},
+  desk:{x:300,y:150,w:96,h:10}, tv:{x:410,y:150,w:34,h:26},
+  shelf:{x:150,y:36,w:70,h:10}, plant:{x:236,y:168},
+  door:{x:440,y:112,w:34,h:86}, lamp:{x:132,y:96},
+  rug:{x:150,y:212,w:150,h:44}, clock:{x:250,y:44},
+};
+const WP = { bed:{x:70,y:250}, rug:{x:214,y:250}, window:{x:344,y:250}, desk:{x:392,y:250}, door:{x:456,y:250} };
+
+/* ============================================================
+   BACKGROUND (room) — drawn into BG on cache-key change
+   ============================================================ */
+let bgKey="";
 function skyColors(){
-  // real local time drives the window sky
-  const h = new Date().getHours() + new Date().getMinutes()/60;
-  // key gradient stops: [top, bottom]
-  if (winPhase>=0) return ["#ffb36b","#ffe3ad"];               // sunrise, always, when you win
-  if (h<5)   return ["#07051a","#1c1440"];
-  if (h<8)   return [mix("#07051a","#3a5a8a",(h-5)/3), mix("#1c1440","#ffb36b",(h-5)/3)];
-  if (h<17)  return ["#4a7ab5","#a8c8e8"];
-  if (h<20)  return [mix("#4a7ab5","#2a1e5e",(h-17)/3), mix("#a8c8e8","#ff8a5e",(h-17)/3)];
+  const h=new Date().getHours()+new Date().getMinutes()/60;
+  if (winPhase>=0) return ["#ffb36b","#ffe3ad"];
+  if (h<5)  return ["#0a0722","#1c1440"];
+  if (h<8)  return [mix("#0a0722","#3a5a8a",(h-5)/3), mix("#1c1440","#ffb36b",(h-5)/3)];
+  if (h<17) return ["#4a7ab5","#a8c8e8"];
+  if (h<20) return [mix("#4a7ab5","#2a1e5e",(h-17)/3), mix("#a8c8e8","#ff8a5e",(h-17)/3)];
   return ["#0a0722","#241a52"];
 }
 function isNight(){ const h=new Date().getHours(); return h>=20||h<6; }
+function isMorning(){ const h=new Date().getHours(); return h>=6&&h<10; }
 
-/* window interior: sky, stars, moon, rain */
-function drawWindow(x,y,w,h2){
-  const [top,bot] = skyColors();
-  const grad = g.createLinearGradient(0,y,0,y+h2);
+function drawBG(){
+  const x=BG.x; x.clearRect(0,0,W,H);
+  const t = winPhase>=0?1:hope01;
+  for (const k in PAL) P[k]=mix(PAL[k][0],PAL[k][1],t);
+
+  // walls (dithered vertical bands = texture)
+  px(x,0,0,W,FLOOR,P.wall);
+  dither(x,0,0,W,10,P.wallLo,P.wall);
+  dither(x,0,10,W,26,P.wallHi,P.wall);
+  px(x,0,FLOOR-5,W,5,P.wallLo);
+  // floor + boards
+  px(x,0,FLOOR,W,H-FLOOR,P.floor);
+  for(let i=0;i<10;i++) px(x,0,FLOOR+i*8,W,1,P.floorLo);
+  dither(x,0,FLOOR,W,6,P.floorLo,P.floor);
+  // rug (teal + rose border)
+  px(x,R.rug.x,R.rug.y,R.rug.w,R.rug.h,P.rugEdge);
+  px(x,R.rug.x+4,R.rug.y+4,R.rug.w-8,R.rug.h-8,P.rug);
+  dither(x,R.rug.x+4,R.rug.y+4,R.rug.w-8,4,P.rug,P.rugEdge);
+
+  // ---- window frame + static skyline silhouette (sky/life drawn in anim) ----
+  drawWindowStatic(x);
+
+  // posters + polaroids
+  px(x,158,60,26,34,DECOR.poster1); px(x,161,63,20,20,DECOR.poster1b); px(x,161,86,20,4,"#00000022");
+  px(x,190,64,22,28,DECOR.poster2); px(x,193,68,16,16,DECOR.poster2b);
+  for(let i=0;i<3;i++){ px(x,224+i*11,58,9,11,"#e8e0d0"); px(x,225+i*11,59,7,7,DECOR.spines[i]); }
+
+  // wall shelf + book spines + fallen book
+  px(x,R.shelf.x,R.shelf.y,R.shelf.w,4,P.shelf);
+  for(let i=0;i<11;i++){ const hh=8+((i*37)%5); px(x,R.shelf.x+3+i*6,R.shelf.y-hh,4,hh,DECOR.spines[i%DECOR.spines.length]); }
+  px(x,R.shelf.x+R.shelf.w-14,R.shelf.y-4,12,3,DECOR.spines[2]); // one fallen flat
+  // hanging vine over shelf
+  for(let i=0;i<6;i++) px(x,R.shelf.x+8+i*10,R.shelf.y+4,2,4+((i*5)%7),P.leaf);
+
+  // wall clock (real time)
+  px(x,R.clock.x-6,R.clock.y-6,13,13,P.deskLeg); px(x,R.clock.x-4,R.clock.y-4,9,9,"#e8e0d0");
+
+  // fairy lights string
+  if (WORLD.fairyOn){ for(let i=0;i<18;i++){ const lx=6+i*26, ly=14+Math.sin(i*0.9)*4;
+    px(x,lx,ly,1,1,"#3a2c46"); } }
+
+  // ---- bed (coral striped blanket + cream pillow) ----
+  px(x,R.bed.x,R.bed.y-14,7,58,P.bed); // headboard
+  px(x,R.bed.x+2,R.bed.y,R.bed.w,R.bed.h,P.bed);
+  px(x,R.bed.x+6,R.bed.y+6,R.bed.w-8,R.bed.h-10,P.blanket);
+  for(let i=0;i<5;i++) px(x,R.bed.x+8+i*22,R.bed.y+6,10,R.bed.h-10,P.blanket2); // stripes
+  dither(x,R.bed.x+6,R.bed.y+R.bed.h-8,R.bed.w-8,4,P.blanket2,P.blanket);
+  px(x,R.pillow.x,R.pillow.y,26,10,P.pillow);
+
+  // ---- bedside crate: ashtray, lighter, beers, chips, tissues ----
+  px(x,R.crate.x,R.crate.y,R.crate.w,R.crate.h,P.crate);
+  px(x,R.crate.x+2,R.crate.y+2,R.crate.w-4,2,P.deskLeg);
+  const sub=S&&S.settings&&S.settings.substances!==false;
+  if (sub){ px(x,R.crate.x+3,R.crate.y-3,6,3,"#2a2230"); // ashtray
+    for(let i=0;i<Math.min(WORLD.beers,4);i++) px(x,R.crate.x+11+i*4,R.crate.y-6,3,7,"#3f6b4f"); // beer bottles
+    px(x,R.crate.x+2,R.crate.y-8,3,6,"#6a4a7a"); // bong (small, matter-of-fact)
+  } else { for(let i=0;i<2;i++) px(x,R.crate.x+11+i*5,R.crate.y-5,4,6,"#c0563e"); } // soda cans
+  px(x,R.crate.x+24,R.crate.y-4,5,4,"#d9a441"); // chips bag corner
+
+  // ---- desk / battlestation ----
+  px(x,R.desk.x,R.desk.y,R.desk.w,4,P.desk);
+  px(x,R.desk.x+3,R.desk.y+4,3,44,P.deskLeg); px(x,R.desk.x+R.desk.w-6,R.desk.y+4,3,44,P.deskLeg);
+  px(x,R.desk.x+8,R.desk.y-12,26,12,"#2a2438"); // laptop
+  px(x,R.desk.x+10,R.desk.y-10,22,8, isNight()?"#7ac0e8":"#bfe4f2");
+  px(x,R.desk.x+40,R.desk.y+2,40,2,"#5a3f6a"); // RGB keyboard strip (hue drawn in anim)
+  px(x,R.desk.x+6,R.desk.y-4,3,4,"#c88a4e"); // mug
+  // CRT TV on low stand
+  px(x,R.tv.x-2,R.tv.y+R.tv.h,R.tv.w+4,4,P.deskLeg);
+  px(x,R.tv.x,R.tv.y,R.tv.w,R.tv.h,"#2a2432");
+
+  // ---- plant (grows with hope) ----
+  px(x,R.plant.x,R.plant.y,14,14,P.pot);
+  const leaves=WORLD.plantLeaves;
+  for(let i=0;i<leaves;i++) px(x,R.plant.x+2-(i%2)*3+(i%3)*4,R.plant.y-2-i*5,6,6,P.leaf);
+  px(x,R.plant.x+6,R.plant.y-2,2,4,mix(PAL.pot[0],"#3f6b4f",.5));
+
+  // ---- floor life: book stack, manga, laundry, pizza box, hobby prop ----
+  px(x,96,232,16,8,DECOR.spines[3]); px(x,98,228,12,4,DECOR.spines[0]); // book stack
+  px(x,118,236,14,5,DECOR.spines[4]); // manga
+  const laundry=Math.max(0,WORLD.laundry*(1-t*0.8));
+  if(laundry>0.1){ px(x,282,238,24*laundry+6,10,P.wallLo); px(x,288,232,14*laundry+4,7,mix(PAL.wall[0],"#8a6a8a",.4)); }
+  if(WORLD.pizzaBox) px(x,300,240,22,8,"#c9a24a");
+  // hobby prop (guitar) — dusty at low hope, brighter at high
+  const dust = t<0.5?0.5:0; px(x,R.door.x-46,150,6,44,mix("#8a5a32","#c98a4a",t)); px(x,R.door.x-49,146,12,10,mix("#8a5a32","#c98a4a",t));
+  if(dust>0){ x.globalAlpha=dust*0.4; px(x,R.door.x-49,146,12,48,"#8a8aa0"); x.globalAlpha=1; }
+
+  // ---- door + hoodie + shoes ----
+  px(x,R.door.x,R.door.y,R.door.w,R.door.h,P.door);
+  px(x,R.door.x+3,R.door.y+3,R.door.w-6,R.door.h-6,P.doorDk);
+  px(x,R.door.x+5,R.door.y+42,3,5,P.shade); // knob
+  px(x,R.door.x-9,R.door.y+6,7,14,"#5a4a6a"); // hoodie on hook
+  px(x,R.door.x-8,190,7,4,"#3a2c46"); if(!WORLD.shoeMissing) px(x,R.door.x-16,190,7,4,"#3a2c46");
+  if (t>0.55 && winPhase<0){ x.fillStyle=`rgba(255,214,140,${(t-0.55)*1.4})`; x.fillRect(R.door.x,R.door.y+R.door.h-2,R.door.w,2); }
+
+  // ---- floor lamp + warm pool (dithered edge) ----
+  px(x,R.lamp.x-2,192,10,3,P.deskLeg); px(x,R.lamp.x+2,120,2,74,P.lampPole);
+  px(x,R.lamp.x-6,108,14,12,P.shade);
+  if(WORLD.lampOn){ px(x,R.lamp.x-4,120,10,2,"#ffe0a8");
+    const cx=R.lamp.x+1;
+    // soft glow on the wall behind the shade (dithered, subtle)
+    x.globalAlpha=0.14+0.10*t; dither(x,cx-16,110,32,40,"rgba(255,190,110,1)","rgba(255,190,110,0)"); x.globalAlpha=1;
+    // warm pool spilling onto the floor (dithered ellipse-ish, sits on FLOOR)
+    x.globalAlpha=0.18+0.12*t;
+    dither(x,cx-30,FLOOR,60,20,"rgba(255,183,94,1)","rgba(255,183,94,0)");
+    dither(x,cx-18,FLOOR+2,36,14,"rgba(255,205,130,1)","rgba(255,205,130,0)");
+    x.globalAlpha=1;
+  }
+
+  // cozy tint: dusk-blue at low hope -> golden at high. NEVER darkens (adds color).
+  x.globalAlpha = 0.07*(1-t); px(x,0,0,W,H,"#4a6ab5");   // dusk blue, fades as hope rises
+  x.globalAlpha = 0.10*t + (winPhase>=0?0.08:0); px(x,0,0,W,H,"#ffcf88"); // golden, grows with hope
+  x.globalAlpha = 1;
+}
+
+/* window: static frame + skyline silhouette in BG; sky gradient too (cache-keyed on minute) */
+function drawWindowStatic(x){
+  const wr=R.window;
+  const [top,bot]=skyColors();
+  const grad=x.createLinearGradient(0,wr.y,0,wr.y+wr.h);
   grad.addColorStop(0,top); grad.addColorStop(1,bot);
-  g.fillStyle = grad; g.fillRect(x,y,w,h2);
-  if (isNight() && winPhase<0){
-    const r = rng(S ? S.seed : 7);
-    for (let i=0;i<14;i++){
-      const sx = x+2+r()*(w-4), sy = y+2+r()*(h2*0.7);
-      const tw = 0.4+0.6*Math.abs(Math.sin(T*1.5+i*2.1));
-      g.fillStyle = `rgba(255,240,210,${0.35+0.5*tw})`;
-      g.fillRect(sx|0, sy|0, 1, 1);
-    }
-    px(x+w-11, y+5, 5, 5, "#f5eed8"); px(x+w-11, y+5, 2, 5, top); // crescent
-  }
-  if (moodyDay && winPhase<0){ // rain streaks
-    g.strokeStyle = "rgba(190,210,240,.35)"; g.lineWidth = 1;
-    for (let i=0;i<10;i++){
-      const rx = x + ((i*13 + T*60) % w), ry = y + ((i*29 + T*140) % h2);
-      g.beginPath(); g.moveTo(rx, ry); g.lineTo(rx-1, ry+4); g.stroke();
-    }
-  }
-  // frame
-  g.fillStyle = pal.doorDark;
-  g.fillRect(x-3,y-3,w+6,3); g.fillRect(x-3,y+h2,w+6,3);
-  g.fillRect(x-3,y,3,h2); g.fillRect(x+w,y,3,h2);
-  g.fillRect(x+(w/2|0),y,1,h2); g.fillRect(x,y+(h2/2|0),w,1);
+  x.fillStyle=grad; x.fillRect(wr.x,wr.y,wr.w,wr.h);
+  // far skyline band
+  const r=rng((S?S.seed:7)^0x51);
+  x.fillStyle="rgba(20,16,40,.55)";
+  for(let bx=wr.x; bx<wr.x+wr.w; ){ const bw=6+((r()*10)|0), bh=14+((r()*28)|0);
+    x.fillRect(bx, wr.y+wr.h-bh, bw, bh); bx+=bw+1; }
+  // near skyline band (darker, taller)
+  x.fillStyle="rgba(12,10,26,.8)";
+  for(let bx=wr.x; bx<wr.x+wr.w; ){ const bw=8+((r()*12)|0), bh=24+((r()*34)|0);
+    x.fillRect(bx, wr.y+wr.h-bh, bw, bh); bx+=bw+2; }
+  // curtains (openness 0..3): drawn as side panels
+  const open=WORLD.curtains, cw=Math.round((wr.w/2)*(1-open/3));
+  px(x,wr.x,wr.y,cw,wr.h,"#a85f72"); px(x,wr.x+wr.w-cw,wr.y,cw,wr.h,"#a85f72");
+  for(let i=0;i<cw;i+=3){ px(x,wr.x+i,wr.y,1,wr.h,"#8a4a5e"); px(x,wr.x+wr.w-cw+i,wr.y,1,wr.h,"#8a4a5e"); }
+  // frame + muntins
+  px(x,wr.x-3,wr.y-3,wr.w+6,3,P.doorDk); px(x,wr.x-3,wr.y+wr.h,wr.w+6,3,P.doorDk);
+  px(x,wr.x-3,wr.y,3,wr.h,P.doorDk); px(x,wr.x+wr.w,wr.y,3,wr.h,P.doorDk);
+  px(x,wr.x+(wr.w/2|0),wr.y,1,wr.h,P.doorDk); px(x,wr.x,wr.y+(wr.h/2|0),wr.w,1,P.doorDk);
+  // windowsill: cactus + incense
+  px(x,wr.x+4,wr.y+wr.h+3,6,4,P.pot); px(x,wr.x+6,wr.y+wr.h-1,2,5,"#3f6b4f");
+  px(x,wr.x+wr.w-8,wr.y+wr.h+3,2,4,"#6a4a3a");
 }
 
-/* light pool: stepped concentric rects for a dithered pixel feel */
-function warmPool(cx,cy,r,base){
-  for (let i=3;i>=1;i--){
-    g.fillStyle = `rgba(255,183,94,${base*(4-i)/3*0.05})`;
-    const rr = r*i/3;
-    g.fillRect(cx-rr, cy-rr*0.5, rr*2, rr);
+/* dynamic window life (anim layer) — lit windows, moon, stars, clouds, weather, train */
+let trainX=-40, trainNext=8, shootT=8, birdT=0;
+function drawWindowLife(){
+  const x=AN.x, wr=R.window, open=WORLD.curtains, cw=Math.round((wr.w/2)*(1-open/3));
+  const vx=wr.x+cw, vw=wr.w-cw*2; if(vw<=2) return; // shut curtains
+  x.save(); x.beginPath(); x.rect(vx,wr.y,vw,wr.h); x.clip();
+  const night=isNight()&&winPhase<0;
+  // lit windows in the near band (flicker phases)
+  if(night){ const r=rng((S?S.seed:7)^0x99);
+    for(let i=0;i<44;i++){ const lx=wr.x+2+r()*(wr.w-4), ly=wr.y+wr.h-4-r()*40;
+      const on=Math.sin(T*0.6+i*2.3)>-.3?1:0.15; x.globalAlpha=on*0.9;
+      px(x,lx,ly,1,1, r()<0.3?"#ffd98a":"#ffb75e"); }
+    x.globalAlpha=1;
+    // red antenna blink
+    if((T%2)<1) px(x,wr.x+wr.w-14,wr.y+8,1,1,"#ff5a5a");
+    // moon + dithered halo
+    const mx=vx+vw-12, my=wr.y+9;
+    x.globalAlpha=.5; dither(x,mx-4,my-4,12,12,"rgba(255,240,210,.4)","rgba(255,240,210,0)"); x.globalAlpha=1;
+    px(x,mx,my,5,5,"#f5eed8"); px(x,mx,my,2,5, skyColors()[0]);
+    // stars
+    for(let i=0;i<12;i++){ const sx=wr.x+2+((i*53)%wr.w), sy=wr.y+2+((i*29)%(wr.h*0.5));
+      const tw=0.4+0.6*Math.abs(Math.sin(T*1.4+i*2.1)); x.globalAlpha=.4+.5*tw; px(x,sx,sy,1,1,"#fff"); }
+    x.globalAlpha=1;
+  } else if(isMorning()){ // dawn birds
+    birdT+=dt; for(let i=0;i<3;i++){ const bx=vx+((T*8+i*30)%vw), by=wr.y+8+Math.sin(T+i)*3;
+      px(x,bx,by,1,1,"#2a2230"); px(x,bx+1,by-1,1,1,"#2a2230"); px(x,bx+2,by,1,1,"#2a2230"); }
   }
+  // drifting cloud
+  const clx=vx+((T*4)%(vw+20))-10; x.globalAlpha=.16; px(x,clx,wr.y+6,14,4,"#fff"); px(x,clx+4,wr.y+4,8,3,"#fff"); x.globalAlpha=1;
+  // train crossing the horizon
+  trainNext-=dt; if(trainNext<=0 && trainX<-30){ trainX=wr.x+wr.w+10; trainNext=90; }
+  if(trainX>-30){ trainX-=dt*90; const ty=wr.y+wr.h-16;
+    px(x,trainX,ty,20,4,"#2a2230"); for(let i=0;i<5;i++) px(x,trainX+2+i*4,ty+1,2,2, (T*10+i|0)%2?"#ffd98a":"#8a7a4a"); }
+  // shooting star
+  shootT-=dt; if(shootT<=0){ shootT=40+Math.random()*20; }
+  if(night && shootT>38){ const p=(40+Math.random()*0-shootT); const sx=vx+p*40, sy=wr.y+6+p*10;
+    x.strokeStyle="rgba(255,255,255,.8)"; x.beginPath(); x.moveTo(sx,sy); x.lineTo(sx-6,sy-2); x.stroke(); }
+  // rain streaks on moody days / rainOn
+  if((moodyDay||WORLD.rainOn) && winPhase<0){ x.strokeStyle="rgba(190,210,240,.4)";
+    for(let i=0;i<12;i++){ const rx=vx+((i*13+T*70)%vw), ry=wr.y+((i*29+T*160)%wr.h);
+      x.beginPath(); x.moveTo(rx,ry); x.lineTo(rx-1,ry+5); x.stroke(); }
+  }
+  x.restore();
 }
 
-/* ---------- character sprite ----------
-   16x24-ish, drawn with rects. poses: lie, sit, stand, walk. */
-function drawChar(x, y, pose, walkT){
-  const girl = S.gender==="girl";
-  const skin = pal.skin;
-  const hair = girl ? "#8a4a5e" : "#3b2f33";
-  const shirt = girl ? "#d9a441" : "#4a8a8a";
-  const pants = "#3d3a5c";
-  const breathe = Math.sin(T*2.2) > 0 ? 1 : 0;
-  const blink = (T % 4.3) < 0.12;
+/* ============================================================
+   SPRITE v2 — procedural rig. poses via a table; overlays for held items.
+   drawn at (x = feet center, y = feet baseline) unless a lie pose.
+   ============================================================ */
+const CHAR = { skinB:"#e6b78e",skinBS:"#c9926a",skinG:"#f0c29a",skinGS:"#d19f76",
+  hairB:"#3b2f37",hairBS:"#2a2028", hairG:"#8a4a5e",hairGS:"#6b3546",
+  shirtB:"#4f8a86",shirtBS:"#3a6a66", shirtG:"#d9a441",shirtGS:"#b3822f",
+  pants:"#3d3a5c",pantsS:"#2e2c46", out:"#241a2e", eye:"#241a2e", shine:"#f7d6ab" };
+function ccol(){ const G=C.gender==="girl"; return { skin:G?CHAR.skinG:CHAR.skinB, skinS:G?CHAR.skinGS:CHAR.skinBS,
+  hair:G?CHAR.hairG:CHAR.hairB, hairS:G?CHAR.hairGS:CHAR.hairBS, shirt:G?CHAR.shirtG:CHAR.shirtB, shirtS:G?CHAR.shirtGS:CHAR.shirtBS,
+  pants:CHAR.pants,pantsS:CHAR.pantsS, out:CHAR.out, eye:CHAR.eye, G }; }
 
-  if (pose === "lie"){ // head on the pillow, body a lump under the blanket
-    px(x+11, y+3-breathe, 32, 8, pal.blanket2);   // body lump
-    px(x+14, y+3-breathe, 6, 2, pal.pillow);      // sheet fold highlight
-    px(x-1, y-3, 10, 4, hair);                    // hair on the pillow
-    px(x, y, 8, 7, skin);                         // head
-    if (girl) px(x+7, y-2, 4, 10, hair);          // long hair spill
-    if (!blink){ px(x+2, y+3, 1, 1, "#241a2e"); px(x+5, y+3, 1, 1, "#241a2e"); }
-    return;
-  }
-  if (pose === "sit"){ // on bed edge
-    px(x+1, y-14-breathe, 8, 7, skin);        // head
-    px(x, y-17-breathe, 10, 4, hair);
-    if (girl){ px(x-1, y-15-breathe, 2, 10, hair); px(x+9, y-15-breathe, 2, 10, hair); }
-    else px(x, y-15-breathe, 1, 3, hair);
-    if (!blink){ px(x+3, y-11-breathe, 1, 1, "#241a2e"); px(x+6, y-11-breathe, 1, 1, "#241a2e"); }
-    px(x+1, y-7-breathe, 8, 8, shirt);        // slumped torso
-    px(x+1, y+1, 8, 4, pants);                // thighs
-    px(x+1, y+5, 3, 6, pants); px(x+6, y+5, 3, 6, pants); // shins
-    px(x+1, y+11, 4, 2, "#26223d"); px(x+6, y+11, 4, 2, "#26223d");
-    return;
-  }
-  // stand / walk
-  const step = pose==="walk" ? Math.sin(walkT*10) : 0;
-  px(x+1, y-22-breathe, 8, 7, skin);
-  px(x, y-25-breathe, 10, 4, hair);
-  if (girl){ px(x-1, y-23-breathe, 2, 11, hair); px(x+9, y-23-breathe, 2, 11, hair); }
-  else px(x, y-23-breathe, 1, 3, hair);
-  if (!blink){ px(x+3, y-19-breathe, 1, 1, "#241a2e"); px(x+6, y-19-breathe, 1, 1, "#241a2e"); }
-  px(x+1, y-15-breathe, 8, 9, shirt);
-  px(x+1, y-6, 3, 6+step*2, pants); px(x+6, y-6, 3, 6-step*2, pants);
-  px(x, y+step*2, 4, 2, "#26223d"); px(x+6, y-step*2, 4, 2, "#26223d");
+// draw a head at head-top (hx,hy). face +1/-1. gaze -1/0/1 shifts eyes.
+function head(ctx,hx,hy,c,gaze,blink){
+  px(ctx,hx-1,hy-1,10,9,c.out);
+  px(ctx,hx,hy,8,7,c.skin); px(ctx,hx,hy+4,8,3,c.skinS);
+  px(ctx,hx-1,hy-2,10,4,c.hair); px(ctx,hx-1,hy-3,10,2,c.hairS);
+  if(c.G){ px(ctx,hx-1,hy,2,9,c.hair); px(ctx,hx+7,hy,2,9,c.hair); }
+  else px(ctx,hx,hy-1,2,2,c.hair);
+  if(!blink){ const gx=gaze||0; px(ctx,hx+2+gx,hy+3,1,1,c.eye); px(ctx,hx+5+gx,hy+3,1,1,c.eye); }
+  else { px(ctx,hx+2,hy+3,1,1,c.skinS); px(ctx,hx+5,hy+3,1,1,c.skinS); }
+}
+function gazeOff(){ return C.gaze==="window"?1:C.gaze==="door"?1:C.gaze==="phone"?0:0; }
+
+const POSES = {
+  lie(ctx,x,y,c,br){ // on the bed (head on pillow left). x ignored — uses bed.
+    const bx=R.pillow.x+2, by=R.bed.y+4-br;
+    px(ctx,bx+10,by,44,12,P.blanket2); // body lump under blanket
+    px(ctx,bx+12,by,8,3,P.blanket);
+    head(ctx,bx,by-2,c,0,blinkNow());
+  },
+  lie_phone(ctx,x,y,c,br){ POSES.lie(ctx,x,y,c,br);
+    const bx=R.pillow.x+2, by=R.bed.y+2-br;
+    px(ctx,bx+16,by-8,4,6,"#2a2438"); // phone held up
+    px(ctx,bx+17,by-7,2,4,"#8ad0f0");
+    px(ctx,bx-2,by-6,10,10,"rgba(140,210,240,.18)"); // glow on face
+  },
+  sit_edge(ctx,x,y,c,br){ const hxp=x-4;
+    px(ctx,hxp+1,y-26-br,8,10,c.shirt); px(ctx,hxp+1,y-20-br,8,4,c.shirtS); // torso slump
+    px(ctx,hxp+1,y-16,8,5,c.pants);
+    px(ctx,hxp+1,y-11,3,9,c.pants); px(ctx,hxp+5,y-11,3,9,c.pants); // legs hang
+    px(ctx,hxp,y-2,4,2,CHAR.out); px(ctx,hxp+5,y-2,4,2,CHAR.out);
+    head(ctx,hxp,y-34-br,c,0,blinkNow()); },
+  sit_floor(ctx,x,y,c,br){ const hxp=x-4;
+    px(ctx,hxp,y-14,10,6,c.pants); // knees up
+    px(ctx,hxp+1,y-20-br,8,8,c.shirt); px(ctx,hxp+1,y-15-br,8,3,c.shirtS);
+    head(ctx,hxp,y-28-br,c,0,blinkNow());
+    px(ctx,hxp-1,y-14,2,6,c.skinS); px(ctx,hxp+9,y-14,2,6,c.skinS); },
+  hug_knees(ctx,x,y,c,br){ const hxp=x-4;
+    px(ctx,hxp,y-15,10,8,c.pants);
+    px(ctx,hxp+1,y-19-br,8,6,c.shirt);
+    head(ctx,hxp+1,y-26-br,c,0,blinkNow());
+    px(ctx,hxp-1,y-16,2,9,c.skin); px(ctx,hxp+9,y-16,2,9,c.skin); },
+  stand(ctx,x,y,c,br){ const hxp=x-4;
+    head(ctx,hxp,y-32-br,c,gazeOff(),blinkNow());
+    px(ctx,hxp+1,y-24-br,8,10,c.shirt); px(ctx,hxp+1,y-17-br,8,3,c.shirtS);
+    px(ctx,hxp+1,y-14,3,10,c.pants); px(ctx,hxp+5,y-14,3,10,c.pants);
+    px(ctx,hxp+1,y-4,3,2,CHAR.out); px(ctx,hxp+5,y-4,3,2,CHAR.out); },
+  lean_window(ctx,x,y,c,br){ const hxp=x-4;
+    head(ctx,hxp,y-32-br,c,1,blinkNow());
+    px(ctx,hxp+1,y-24-br,8,10,c.shirt); px(ctx,hxp+1,y-17-br,8,3,c.shirtS);
+    px(ctx,hxp+8,y-22-br,3,8,c.skin); // arm up to sill
+    px(ctx,hxp+1,y-14,3,10,c.pants); px(ctx,hxp+5,y-14,3,10,c.pants);
+    px(ctx,hxp+1,y-4,3,2,CHAR.out); px(ctx,hxp+5,y-4,3,2,CHAR.out); },
+  walk(ctx,x,y,c,br){ const hxp=x-4, s=Math.sin(C.walkT*10);
+    head(ctx,hxp,y-32-br,c,C.face>0?1:-1,blinkNow());
+    px(ctx,hxp+1,y-24-br,8,10,c.shirt); px(ctx,hxp+1,y-17-br,8,3,c.shirtS);
+    px(ctx,hxp+1,y-14,3,10+s*2,c.pants); px(ctx,hxp+5,y-14,3,10-s*2,c.pants);
+    px(ctx,hxp,y-4+s*2,4,2,CHAR.out); px(ctx,hxp+5,y-4-s*2,4,2,CHAR.out); },
+};
+function blinkNow(){ return (T%4.3)<0.12; }
+
+/* held-item + emote overlays drawn after pose */
+function overlays(ctx){
+  const c=ccol(), br=Math.sin(T*2.2)>0?1:0;
+  const hxp=C.x-4, feetY=C.y;
+  if(C.held==="controller" && C.pose!=="lie"){ px(ctx,hxp+2,feetY-18,8,3,"#2a2438"); px(ctx,hxp+3,feetY-17,2,1,"#ff5a5a"); }
+  if(WORLD.headphones){ const hy=poseHeadY(); px(ctx,hxp-1,hy-2,2,7,"#2a2438"); px(ctx,hxp+8,hy-2,2,7,"#2a2438"); px(ctx,hxp,hy-3,9,2,"#2a2438"); }
+  if(C.emote){ drawEmote(ctx, hxp+2, poseHeadY()-6, C.emote); }
+}
+function poseHeadY(){ // approximate head-top y for current pose
+  if(C.pose==="lie"||C.pose==="lie_phone") return R.bed.y-2;
+  if(C.pose==="sit_edge") return C.y-34; if(C.pose==="sit_floor"||C.pose==="hug_knees") return C.y-28;
+  return C.y-32;
+}
+function drawEmote(ctx,x,y,e){
+  if(e==="…") { px(ctx,x,y,1,1,"#cfc6e8"); px(ctx,x+2,y,1,1,"#cfc6e8"); px(ctx,x+4,y,1,1,"#cfc6e8"); }
+  else if(e==="♪"){ px(ctx,x+2,y-2,1,4,"#ffd98a"); px(ctx,x+2,y-2,3,1,"#ffd98a"); px(ctx,x+1,y+2,2,2,"#ffd98a"); }
+  else if(e==="!"){ px(ctx,x+2,y-2,1,3,"#ff9a5a"); px(ctx,x+2,y+2,1,1,"#ff9a5a"); }
+  else if(e==="♥"){ px(ctx,x+1,y,1,2,"#ff7aa8"); px(ctx,x+3,y,1,2,"#ff7aa8"); px(ctx,x+2,y+2,1,1,"#ff7aa8"); }
 }
 
-/* ---------- the room ---------- */
-function drawRoom(){
-  const W=320, H=180;
-  hope01 += ((Math.min(S.hope,100)/100) - hope01) * 0.02; // ease toward target
-  const t = winPhase>=0 ? 1 : hope01;
-  for (const k in PAL) pal[k] = mix(PAL[k][0], PAL[k][1], t);
-
-  // walls & floor
-  px(0,0,W,132, pal.wall);
-  px(0,0,W,8, pal.wallLo);                        // ceiling shadow band
-  px(0,127,W,5, pal.wallLo);                      // skirting shadow
-  px(0,132,W,48, pal.floor);
-  for (let i=0;i<8;i++) px(0,132+i*6,W,1, pal.floorLo);   // floorboards
-  // rug
-  px(112,148,94,22, pal.rugEdge); px(116,151,86,16, pal.rug);
-
-  // posters (slightly crooked = life is like that)
-  px(118,34,26,32, pal.poster1); px(120,36,22,9, pal.wallLo); px(120,49,22,2, pal.wallLo); px(120,54,14,2, pal.wallLo);
-  px(154,40,20,25, pal.poster2); px(157,44,14,13, pal.wallLo);
-
-  // window (right of center)
-  drawWindow(208,38,48,46);
-
-  // door (far right) — the goal
-  px(278,62,32,70, pal.door);
-  px(282,66,24,62, pal.doorDark);
-  px(285,96,3,4, pal.shade);                      // knob
-  if (t > 0.5 && winPhase<0){                      // light under the door as hope grows
-    g.fillStyle = `rgba(255,214,140,${(t-0.5)*1.2})`;
-    g.fillRect(278,130,32,2);
-  }
-
-  // bed (left)
-  px(16,100,6,42, pal.bedFrame);                  // headboard
-  px(22,118,78,18, pal.blanket);                  // mattress + blanket
-  px(22,129,78,4, pal.blanket2);
-  px(24,112,20,8, pal.pillow);                    // pillow
-  px(22,136,4,8, pal.deskLeg); px(94,136,4,8, pal.deskLeg);
-
-  // clothes pile: shrinks as hope rises (the room tidies itself)
-  const pile = Math.max(0, 1-t*1.4);
-  if (pile>0.05){
-    px(120,160,26*pile+6,8, pal.clothes);
-    px(126,155,16*pile+4,6, mix(PAL.clothes[0],"#8a6a8a",0.3));
-  }
-
-  // plant: grows with hope
-  px(188,150,12,12, pal.pot);
-  const leaves = 1+Math.round(t*4);
-  for (let i=0;i<leaves;i++){
-    px(192-(i%2)*4+(i%3)*3, 144-i*5, 5,5, pal.leaf);
-  }
-  px(193,146,2,6, mix(PAL.pot[0],"#3f6b4f",0.5));
-
-  // desk & laptop (under the window)
-  px(212,120,50,4, pal.desk);
-  px(214,124,3,26, pal.deskLeg); px(257,124,3,26, pal.deskLeg);
-  px(226,108,18,12, "#2a2438");                   // laptop screen
-  px(228,110,14,8, isNight()? "#9ad7f7" : "#c8e8f5");
-  px(226,120,18,2, "#3a3450");
-  // cold light spill from laptop
-  g.fillStyle = "rgba(154,215,247,.09)"; g.fillRect(217,111,36,9);
-
-  // floor lamp between bed and rug
-  px(102,140,12,3, pal.deskLeg);
-  px(107,97,2,43, pal.lampPole);
-  px(100,86,16,11, pal.shade);
-  px(102,97,12,2, "#ffe0a8");
-  warmPool(108,124,34, 0.5+0.3*t);                // warm pool of light
-
-  // moon/sun light from window onto floor
-  g.fillStyle = winPhase>=0 ? "rgba(255,200,130,.28)" : (isNight() ? "rgba(150,170,255,.07)" : "rgba(255,235,200,.09)");
-  g.beginPath();
-  g.moveTo(208,84); g.lineTo(256,84); g.lineTo(282,170); g.lineTo(198,170); g.closePath(); g.fill();
-
-  // ---------- the character ----------
-  if (winPhase >= 0){
-    winPhase += 1/60;
-    const wx = Math.min(60 + winPhase*26, 286);
-    if (wx < 286) drawChar(wx, 152, "walk", winPhase);
-    if (winPhase > 6){ // door open, flood
-      px(282,66,24,62, "#ffe8bd");
-      g.fillStyle = `rgba(255,232,189,${Math.min((winPhase-6)/3,1)*0.9})`;
-      g.fillRect(0,0,W,H);
-    }
-  } else if (S.hope < 32)      drawChar(28, 111, "lie");
-  else if (S.hope < 62)        drawChar(56, 117, "sit");
-  else if (S.hope < 88)        drawChar(184, 152, "stand");   // by the window light
-  else                         drawChar(262, 152, "stand");   // near the door
-
-  // global grade: cool desaturating veil that lifts with hope
-  g.fillStyle = `rgba(20,14,46,${0.30*(1-t)})`; g.fillRect(0,0,W,H);
-  if (moodyDay && winPhase<0){ g.fillStyle="rgba(30,34,60,.18)"; g.fillRect(0,0,W,H); }
+/* ---------- cat (orange tabby) ---------- */
+const CAT = { x:200, y:250, pose:"curl", t:0, target:null };
+function drawCat(ctx){
+  const x=CAT.x, y=CAT.y, o="#7a3a1a", b="#d9803a", bl="#e89a54";
+  if(CAT.pose==="curl"){ px(ctx,x,y-5,12,6,b); px(ctx,x+1,y-6,10,2,bl); px(ctx,x+10,y-7,4,4,b); px(ctx,x+11,y-6,1,1,"#ffe"); px(ctx,x,y-3,3,2,o); }
+  else if(CAT.pose==="sit"){ px(ctx,x+2,y-8,7,9,b); px(ctx,x+3,y-11,5,4,b); px(ctx,x+3,y-9,1,1,"#3a5"); px(ctx,x+6,y-9,1,1,"#3a5"); px(ctx,x+2,y-13,1,2,o); px(ctx,x+7,y-13,1,2,o); px(ctx,x+8,y-4,3,4,b); }
+  else if(CAT.pose==="stretch"){ px(ctx,x,y-4,16,5,b); px(ctx,x-2,y-5,4,4,b); px(ctx,x+15,y-6,4,3,o); }
+  else if(CAT.pose==="walk"){ const s=Math.sin(CAT.t*10)>0?1:0; px(ctx,x+2,y-7,10,6,b); px(ctx,x+1,y-9,4,4,b); px(ctx,x+2,y-1,2,2+s,o); px(ctx,x+9,y-1,2,2-s,o); px(ctx,x+11,y-9,4,3,o); }
 }
 
+/* ============================================================
+   CHARACTER STATE + locomotion (waypoints)
+   ============================================================ */
+const C = { gender:"boy", pose:"lie", x:70, y:250, face:1, walkT:0, gaze:"", target:null, onArrive:null, held:null, emote:null, emoteT:0 };
+function restPose(){ const h=S.hope;
+  if(h<32) return {pose:"lie", x:70, y:250};
+  if(h<62) return {pose:"sit_edge", x:100, y:R.bed.y+R.bed.h};
+  if(h<88) return {pose:"lean_window", x:WP.window.x, y:WP.window.y};
+  return {pose:"stand", x:WP.door.x-10, y:WP.door.y}; }
+function walkTo(name, cb){ C.target=name; C.onArrive=cb||null; }
+function updateChar(){
+  if(C.target){ const wp=WP[C.target]; const tx=wp.x, dx=tx-C.x;
+    C.face = dx<0?-1:1; C.pose="walk"; C.walkT+=dt;
+    if(Math.abs(dx)<2){ C.x=tx; C.y=wp.y; C.target=null; C.pose="stand"; if(C.onArrive){ const f=C.onArrive; C.onArrive=null; f(); } }
+    else C.x += Math.sign(dx)*Math.min(Math.abs(dx), dt*70);
+  }
+  if(C.emoteT>0){ C.emoteT-=dt; if(C.emoteT<=0) C.emote=null; }
+  // cat idle drift
+  CAT.t+=dt;
+  if(CAT.target!=null){ const dx=CAT.target-CAT.x; CAT.face=Math.sign(dx); CAT.pose="walk"; if(Math.abs(dx)<2){CAT.x=CAT.target;CAT.target=null;CAT.pose="sit";} else CAT.x+=Math.sign(dx)*dt*60; }
+}
+
+/* ============================================================
+   ACTION REGISTRY + SCHEDULER
+   def: {cat, layer:'anim'|'fx', dur, blocking, cooldown, at, requires, start, update, draw, pose, hold, world}
+   ============================================================ */
+const ACT = {};
+function A(id,def){ ACT[id]=def; }
+const CATALOG = ("walk_to_bed walk_to_rug walk_to_window walk_to_desk walk_to_door collapse_bed sit_up sit_edge stand_up sit_floor_against_bed hug_knees lie_starfish face_wall pace_small "
++"burrow_blanket blanket_over_head toss_turn zzz_drift nap_micro wake_jolt stare_ceiling pillow_hug "
++"doomscroll phone_drop_face phone_toss_bedend check_lock_check photo_scroll_pause phone_face_down alarm_dismiss type_delete_type "
++"console_on console_off grab_controller rage_pause small_victory headset_on tv_static game_over_screen afk_menu_loop unplug_cable "
++"crack_beer sip_beer push_bottle_away light_cig_window stub_out bong_hit_implied ashtray_ember incense_light bottles_to_bin fridge_beer_stare "
++"privacy_mode long_shower blanket_shift get_dressed_finally "
++"drink_water refill_glass curtain_open_notch curtain_close window_crack_open shower_quick brush_teeth stretch_arms deep_breath make_bed_half eat_something_real splash_face "
++"cat_tail_flick cat_ear_twitch cat_stretch_long cat_knead cat_walk_to_rug cat_lap_sit cat_headbutt_hand cat_window_watch cat_zoomies cat_feed "
++"water_plant plant_new_leaf tidy_one_item laundry_shove pizza_box_close fridge_snack kettle_on radio_toggle fairy_lights_toggle poster_straighten book_pick_up book_toss "
++"sigh_visible laugh_real smile_small eye_glisten blush eyeroll wince shrug nod_slow headshake ellipsis_bubble note_bubble "
++"headphones_on headphones_off head_bob vinyl_on vinyl_off volume_up_gesture "
++"rain_start rain_stop lightning_far shooting_star train_pass city_flicker_wave birds_morning fireworks_rare fog_roll moon_halo_pulse streetlight_flicker neon_sign_toggle plane_blink_cross window_watch_together "
++"shake_small shake_big zoom_drift_in zoom_reset vignette_breathe heartbeat_pulse dream_desat warm_flash confetti_win letterbox_cinematic "
++"day_fastforward lamp_toggle lamp_flicker laptop_wake laptop_sleep clock_glance door_glance door_touch_retreat door_open_crack hope_bloom").split(/\s+/);
+
+/* stage-valid IDs mirrored from the worker contract (used by idle pool + validation) */
+const STAGE_ACTIONS = {
+  bed:["collapse_bed","burrow_blanket","stare_ceiling","toss_turn","doomscroll","phone_drop_face","check_lock_check","sigh_visible","ellipsis_bubble","sip_beer","ashtray_ember","cat_tail_flick","nod_slow","headshake","zzz_drift"],
+  sit:["sit_up","sit_edge","sit_floor_against_bed","hug_knees","doomscroll","grab_controller","sip_beer","light_cig_window","drink_water","eyeroll","shrug","smile_small","cat_lap_sit","note_bubble","deep_breath"],
+  window:["walk_to_window","curtain_open_notch","window_crack_open","deep_breath","drink_water","stretch_arms","cat_window_watch","smile_small","laugh_real","eye_glisten","push_bottle_away","water_plant","clock_glance"],
+  door:["walk_to_door","door_glance","door_touch_retreat","make_bed_half","bottles_to_bin","get_dressed_finally","laugh_real","nod_slow","smile_small","stretch_arms","window_watch_together"]
+};
+function stageOf(){ const h=S?S.hope:20; return h<32?"bed":h<62?"sit":h<88?"window":"door"; }
+
+/* scheduler */
+let running=[]; let blockingId=null; const lastPlayed={};
+/* defensive: an action closure that throws must never freeze the RAF loop */
+function tryRun(inst,fn,a,b){ if(!fn) return; try{ fn(a,b); }
+  catch(e){ if(!inst._err){ inst._err=1; console.warn("action '"+inst.id+"' failed:",e&&e.message); } inst._dead=1; } }
+function playAct(id,opts){ const def=ACT[id]; if(!def) return false;
+  if(def.requires){ try{ if(!def.requires()) return false; }catch(e){ return false; } }
+  const cd=def.cooldown||0; if(cd && (T-(lastPlayed[id]||-1e9))<cd) return false;
+  if(def.blocking){ if(blockingId) return false; blockingId=id; }
+  lastPlayed[id]=T;
+  const inst={id,def,age:0,t:0,dur:def.dur||2,mem:{},started:false};
+  const begin=()=>{ inst.started=true; if(def.pose!==undefined) C.pose=def.pose;
+    if(def.hold!==undefined) C.held=def.hold; tryRun(inst,def.world); tryRun(inst,def.start,inst); };
+  if(def.at && C.target!==def.at){ walkTo(def.at, begin); } else begin();
+  running.push(inst); return true;
+}
+function updateActions(){ for(let i=running.length-1;i>=0;i--){ const inst=running[i];
+  if(!inst.started) continue;
+  if(inst._dead){ if(inst.def.blocking&&blockingId===inst.id) blockingId=null; if(inst.def.hold!==undefined) C.held=null; running.splice(i,1); continue; }
+  inst.age+=dt; inst.t=Math.min(1, inst.age/inst.dur);
+  tryRun(inst,inst.def.update,inst);
+  if(inst.age>=inst.dur){ tryRun(inst,inst.def.end,inst);
+    if(inst.def.blocking) blockingId=null; if(inst.def.hold!==undefined) C.held=null;
+    running.splice(i,1); } } }
+function drawActions(layer){ const ctx=layer==="fx"?FX.x:AN.x;
+  for(const inst of running){ if(!inst.started||inst._dead) continue; if((inst.def.layer||"anim")!==layer) continue;
+    ctx.globalAlpha=1; tryRun(inst,inst.def.draw,ctx,inst); ctx.globalAlpha=1; } }
+
+/* small helpers for actions */
+function emote(sym,secs){ C.emote=sym; C.emoteT=secs||1.5; }
+function fxShake(m,secs){ fx.shakeMag=m; fx.shakeT=secs||0.3; }
+function fxFlash(col,a){ fx.flashCol=col||"255,224,150"; fx.flashA=a||0.5; }
+function fxZoom(z){ fx.zoomTarget=z; }
+function headPos(){ return {x:C.x-2, y:poseHeadY()}; }
+
+/* ============================================================
+   ~50 EXEMPLAR ACTIONS (every category represented).
+   remaining catalog IDs are filled by ACT_EXTRA (fanned out) below.
+   ============================================================ */
+/* locomotion / posture */
+A("walk_to_window",{cat:"loco",dur:2,at:"window",pose:"walk",end:()=>C.pose="lean_window"});
+A("walk_to_door",{cat:"loco",dur:2,at:"door",pose:"walk",end:()=>C.pose="stand"});
+A("walk_to_bed",{cat:"loco",dur:2,at:"bed",pose:"walk",end:()=>C.pose="lie"});
+A("walk_to_desk",{cat:"loco",dur:2,at:"desk",pose:"walk",end:()=>C.pose="stand"});
+A("walk_to_rug",{cat:"loco",dur:2,at:"rug",pose:"walk",end:()=>C.pose="stand"});
+A("collapse_bed",{cat:"loco",dur:1.2,start:()=>{C.x=70;C.y=250;C.pose="lie";},pose:"lie"});
+A("sit_edge",{cat:"loco",dur:1,start:()=>{C.x=100;C.y=R.bed.y+R.bed.h;},pose:"sit_edge"});
+A("sit_up",{cat:"loco",dur:1,pose:"sit_edge"});
+A("stand_up",{cat:"loco",dur:1,pose:"stand"});
+A("sit_floor_against_bed",{cat:"loco",dur:1,start:()=>{C.x=118;C.y=250;},pose:"sit_floor"});
+A("hug_knees",{cat:"loco",dur:2,pose:"hug_knees"});
+A("pace_small",{cat:"loco",dur:3,pose:"walk",update:(i)=>{ C.x=WP.rug.x+Math.sin(i.age*3)*20; C.walkT+=dt; }});
+A("face_wall",{cat:"loco",dur:2,pose:"stand",start:()=>C.face=-1});
+
+/* bed / sleep */
+A("burrow_blanket",{cat:"bed",dur:2,pose:"lie",draw:(ctx)=>{ px(ctx,R.pillow.x,R.bed.y,52,12,P.blanket); }});
+A("stare_ceiling",{cat:"bed",dur:3,pose:"lie",start:()=>C.gaze=""});
+A("toss_turn",{cat:"bed",dur:2,pose:"lie",draw:(ctx,i)=>{ const dxx=Math.sin(i.age*6)*2; px(ctx,R.pillow.x+dxx,R.bed.y+2,50,10,P.blanket2); }});
+A("zzz_drift",{cat:"bed",dur:4,pose:"lie",update:(i)=>{ if((i.age%1)<0.05) spawn(R.pillow.x+8, R.bed.y-2, 0.2,-0.4, 1.6, "#cfc6e8",1,0); },
+  draw:(ctx,i)=>{ emote("…",0.2); }});
+
+/* phone */
+A("doomscroll",{cat:"phone",dur:4,pose:"lie_phone",world:()=>{WORLD.phoneOut=true;},start:()=>C.gaze="phone",
+  end:()=>{WORLD.phoneOut=false;}, draw:(ctx,i)=>{ if((i.age%0.5)<0.25) px(ctx,R.pillow.x+18,R.bed.y-4,2,1,"#8ad0f0"); }});
+A("check_lock_check",{cat:"phone",dur:2.4,pose:"lie",draw:(ctx,i)=>{ const on=(i.age%0.8)<0.3; if(on) px(ctx,R.pillow.x-3,R.bed.y-6,10,10,"rgba(140,210,240,.2)"); }});
+A("phone_face_down",{cat:"phone",dur:1,pose:"lie",world:()=>{WORLD.phoneOut=false;bump();}});
+
+/* gaming */
+A("console_on",{cat:"game",dur:1.5,world:()=>{WORLD.consoleOn=true;WORLD.tvState="game";bump();},
+  draw:(ctx)=>{ px(ctx,R.tv.x+2,R.tv.y+2,R.tv.w-4,R.tv.h-4, (T*8|0)%2?"#3a5a8a":"#2a4a7a"); }});
+A("grab_controller",{cat:"game",dur:3,hold:"controller",pose:"sit_floor",start:()=>{C.x=WP.rug.x;C.y=250;}});
+A("small_victory",{cat:"game",dur:1.6,start:()=>{ emote("!",1.4); for(let k=0;k<14;k++) spawn(C.x, C.y-20, (Math.random()-0.5)*2, -Math.random()*2-0.5, 1.2, ["#ffb75e","#ff7aa8","#5ec8c0"][k%3],1,0.05); }});
+
+/* substances (respect settings.substances) */
+const subOn=()=>!(S&&S.settings&&S.settings.substances===false);
+A("crack_beer",{cat:"sub",dur:1.5,requires:subOn,world:()=>{WORLD.beers=Math.min(6,WORLD.beers+1);bump();},
+  start:(i)=>{ for(let k=0;k<6;k++) spawn(R.crate.x+12,R.crate.y-6,(Math.random()-0.5),-Math.random()-0.2,0.8,"#e8e0d0",1,0.02); sfx("crack"); }});
+A("sip_beer",{cat:"sub",dur:1.6,requires:subOn,pose:"sit_edge"});
+A("push_bottle_away",{cat:"sub",dur:1.8,requires:subOn,world:()=>{WORLD.beers=Math.max(0,WORLD.beers-1);bump();},
+  start:()=>{ emote("…",1.5); }});
+A("light_cig_window",{cat:"sub",dur:3,requires:subOn,at:"window",world:()=>{WORLD.curtains=Math.max(WORLD.curtains,2);bump();},
+  update:(i)=>{ if((i.age%0.6)<0.05) spawn(R.window.x+40, R.window.y+R.window.h-6, 0.1,-0.5, 2, "rgba(200,200,210,.5)",1,0); }});
+A("bottles_to_bin",{cat:"sub",dur:2.5,requires:subOn,world:()=>{WORLD.beers=0;bump();},start:()=>emote("♪",2)});
+A("ashtray_ember",{cat:"sub",dur:2,requires:subOn,draw:(ctx,i)=>{ const gl=0.4+0.6*Math.abs(Math.sin(i.age*3)); px(ctx,R.crate.x+4,R.crate.y-2,1,1,`rgba(255,120,60,${gl})`); }});
+
+/* suggestive-implied — camera looks away, absolute */
+A("privacy_mode",{cat:"imp",dur:6,blocking:true,layer:"fx",world:()=>{WORLD.lampOn=false;bump();},
+  start:()=>{ addSys("(…)"); }, end:()=>{ WORLD.lampOn=true; bump(); playAct("long_shower"); },
+  draw:(ctx,i)=>{ ctx.fillStyle=`rgba(6,4,14,${0.7})`; ctx.fillRect(0,0,W,FLOOR);
+    if((i.age%0.6)<0.3) px(ctx,R.pillow.x+8,R.bed.y-2,6,6,"rgba(140,210,240,.25)"); }});
+A("long_shower",{cat:"imp",dur:4,draw:(ctx,i)=>{ for(let k=0;k<3;k++){ const sy=R.door.y+((i.age*20+k*14)%40); px(ctx,R.door.x-3,sy,2,2,"rgba(220,230,240,.35)"); } }});
+/* reach_out — the worker's self-harm circuit-breaker. a calm, held, hopeful beat: the room
+   breathes a gentle warm pulse, a soft ♥ at the head. never alarming, never dark. */
+A("reach_out",{cat:"care",dur:3,layer:"fx",start:()=>{ emote("♥",2.6); fxFlash("255,190,150",0.18); },
+  draw:(ctx,i)=>{ const p=0.06+0.05*Math.sin(i.age*1.6); ctx.fillStyle=`rgba(255,200,160,${p})`; ctx.fillRect(0,0,W,H); }});
+
+/* self-care */
+A("drink_water",{cat:"care",dur:2,pose:"stand",start:()=>emote("…",0.8)});
+A("curtain_open_notch",{cat:"care",dur:1.5,at:"window",world:()=>{WORLD.curtains=Math.min(3,WORLD.curtains+1);bump();}});
+A("deep_breath",{cat:"care",dur:3,pose:"stand",update:(i)=>{ if((i.age%1.5)<0.05){ for(let k=0;k<5;k++) spawn(C.x-2+k*2, C.y-24, (k-2)*0.1,-0.3,1.4,"#bcdcff",1,0);} }});
+A("stretch_arms",{cat:"care",dur:2,pose:"stand",start:()=>emote("♪",1.5)});
+
+/* cat */
+A("cat_tail_flick",{cat:"cat",dur:2,draw:(ctx,i)=>{ px(ctx,CAT.x-1+Math.sin(i.age*6)*2,CAT.y-3,3,2,"#7a3a1a"); }});
+A("cat_stretch_long",{cat:"cat",dur:2,start:()=>CAT.pose="stretch",end:()=>CAT.pose="sit"});
+A("cat_lap_sit",{cat:"cat",dur:4,requires:()=>C.pose==="sit_edge"||C.pose==="sit_floor",
+  start:()=>{CAT.target=C.x+6;}, draw:(ctx)=>{ CAT.pose="curl"; }});
+A("cat_window_watch",{cat:"cat",dur:4,start:()=>{CAT.target=WP.window.x-14;CAT.pose="sit";}});
+A("cat_zoomies",{cat:"cat",dur:3,start:()=>CAT.pose="walk",update:(i)=>{ CAT.x=WP.rug.x+Math.sin(i.age*6)*60; },end:()=>CAT.pose="sit"});
+A("cat_feed",{cat:"cat",dur:2,start:()=>{ for(let k=0;k<6;k++) spawn(CAT.x+4,CAT.y-2,(Math.random()-.5),-Math.random(),0.8,"#c88a4e",1,0.05); }});
+
+/* room objects */
+A("water_plant",{cat:"room",dur:2.5,at:"window",world:()=>{WORLD.plantLeaves=Math.min(8,WORLD.plantLeaves+1);bump();},
+  update:(i)=>{ if((i.age%0.3)<0.05) spawn(R.plant.x+6,R.plant.y-8,0,0.6,0.6,"#8ad0f0",1,0.1); }});
+A("fairy_lights_toggle",{cat:"room",dur:0.6,world:()=>{WORLD.fairyOn=!WORLD.fairyOn;bump();}});
+A("tidy_one_item",{cat:"room",dur:2,world:()=>{WORLD.laundry=Math.max(0,WORLD.laundry-0.4);WORLD.pizzaBox=false;bump();},start:()=>emote("♪",1.5)});
+
+/* emotes */
+A("sigh_visible",{cat:"emote",dur:1.6,start:()=>{ emote("…",1.4); spawn(headPos().x+2,headPos().y-2,0.3,-0.3,1.4,"#cfc6e8",1,0); }});
+A("smile_small",{cat:"emote",dur:1.4,start:()=>emote("♥",1.2)});
+A("eyeroll",{cat:"emote",dur:1.2,start:()=>C.gaze=""});
+A("ellipsis_bubble",{cat:"emote",dur:1.4,start:()=>emote("…",1.2)});
+A("nod_slow",{cat:"emote",dur:1.4,draw:(ctx,i)=>{}});
+A("note_bubble",{cat:"emote",dur:1.4,start:()=>emote("♪",1.2)});
+A("laugh_real",{cat:"emote",dur:1.6,start:()=>{ emote("!",1.4); for(let k=0;k<3;k++) spawn(headPos().x+4+k*2,headPos().y-2,0.2*(k-1),-0.4,1.2,"#ffd98a",1,0); }});
+A("eye_glisten",{cat:"emote",dur:1.6,start:()=>{ const h=headPos(); spawn(h.x+5,h.y+3,0,0.1,1.4,"#bcdcff",1,0); }});
+A("headshake",{cat:"emote",dur:1.2});
+A("shrug",{cat:"emote",dur:1.2});
+
+/* music */
+A("headphones_on",{cat:"music",dur:0.8,world:()=>{WORLD.headphones=true;}});
+A("headphones_off",{cat:"music",dur:0.8,world:()=>{WORLD.headphones=false;}});
+A("head_bob",{cat:"music",dur:4,update:(i)=>{}, draw:(ctx,i)=>{ if(WORLD.headphones && (i.age%1)<0.5) emote("♪",0.3); }});
+A("vinyl_on",{cat:"music",dur:1,world:()=>{WORLD.vinyl=true;},update:(i)=>{ if((i.age%0.5)<0.1) spawn(R.shelf.x+30,R.shelf.y-6,0.2,-0.3,1,"#ffd98a",1,0); }});
+
+/* window / world */
+A("rain_start",{cat:"world",dur:1,world:()=>{WORLD.rainOn=true;}});
+A("rain_stop",{cat:"world",dur:1,world:()=>{WORLD.rainOn=false;}});
+A("shooting_star",{cat:"world",dur:1.5,start:()=>{ shootT=1.6; }});
+A("train_pass",{cat:"world",dur:3,start:()=>{ trainX=R.window.x+R.window.w+10; trainNext=90; }});
+A("birds_morning",{cat:"world",dur:3});
+A("window_watch_together",{cat:"world",dur:4,at:"window",start:()=>{CAT.target=WP.window.x-14;},end:()=>CAT.pose="sit",
+  draw:(ctx)=>{ C.pose="lean_window"; }});
+
+/* screen / fx */
+A("shake_small",{cat:"fx",dur:0.4,layer:"fx",start:()=>fxShake(1.2,0.4)});
+A("shake_big",{cat:"fx",dur:0.6,layer:"fx",start:()=>fxShake(3,0.6)});
+A("warm_flash",{cat:"fx",dur:0.4,layer:"fx",start:()=>fxFlash("255,224,150",0.5)});
+A("vignette_breathe",{cat:"fx",dur:3,layer:"fx",draw:(ctx,i)=>{ fx.vig=0.15+0.1*Math.sin(i.age*2); }});
+A("zoom_drift_in",{cat:"fx",dur:3,layer:"fx",start:()=>fxZoom(1.12),end:()=>fxZoom(1)});
+A("zoom_reset",{cat:"fx",dur:0.5,layer:"fx",start:()=>fxZoom(1)});
+A("heartbeat_pulse",{cat:"fx",dur:2,layer:"fx",draw:(ctx,i)=>{ const p=Math.max(0,Math.sin(i.age*3.14*2)); ctx.fillStyle=`rgba(200,60,70,${p*0.12})`; ctx.fillRect(0,0,W,H); }});
+
+/* time / meta */
+A("lamp_toggle",{cat:"meta",dur:0.5,world:()=>{WORLD.lampOn=!WORLD.lampOn;bump();}});
+A("clock_glance",{cat:"meta",dur:1.4,start:()=>C.gaze="",draw:(ctx)=>{}});
+A("door_touch_retreat",{cat:"meta",dur:3,at:"door",requires:()=>S.hope>=85,
+  update:(i)=>{ if(i.age<1.5) C.x=Math.min(WP.door.x, C.x+dt*10); else C.x=Math.max(WP.door.x-14, C.x-dt*10); },
+  start:()=>emote("…",2.5)});
+A("hope_bloom",{cat:"meta",dur:1,layer:"fx",start:()=>fxFlash("255,214,140",0.35)});
+A("day_fastforward",{cat:"meta",dur:2,layer:"fx",draw:(ctx,i)=>{ ctx.fillStyle=`rgba(0,0,0,${Math.sin(i.t*3.14)*0.6})`; ctx.fillRect(0,0,W,H); }});
+
+/* ---- fanned-out action implementations (64) — BUILD_PLAN §4.3. inline defs above win ties ---- */
+const EXTRA = Object.assign({},
+/* bed-phone-imp */
+{
+  "lie_starfish": {cat:"bed-phone-imp",dur:2.5,pose:"lie",start:()=>emote("…",1.2),
+    draw:(ctx)=>{ const cx=R.bed.x+R.bed.w/2, cy=R.bed.y+6; px(ctx,R.bed.x+6,cy,cx-R.bed.x-8,3,"#d99a8c"); px(ctx,cx+8,cy,R.bed.x+R.bed.w-cx-12,3,"#d99a8c"); px(ctx,cx-2,cy+10,3,10,"#d99a8c"); px(ctx,cx+4,cy+10,3,10,"#d99a8c"); }},
+
+  "blanket_over_head": {cat:"bed-phone-imp",dur:2.5,pose:"lie",
+    draw:(ctx)=>{ const h=headPos(); px(ctx,h.x-11,h.y-1,24,15,P.blanket); px(ctx,h.x-9,h.y-4,20,4,P.blanket2); px(ctx,h.x-11,h.y+13,24,2,P.blanket2); }},
+
+  "nap_micro": {cat:"bed-phone-imp",dur:3,pose:"lie",layer:"fx",start:()=>emote("…",1.2),
+    draw:(ctx,i)=>{ const a=Math.sin(i.t*Math.PI)*0.55; px(ctx,0,0,480,270,`rgba(10,10,26,${a.toFixed(3)})`); }},
+
+  "wake_jolt": {cat:"bed-phone-imp",dur:1.2,pose:"sit_edge",start:()=>{ fxShake(3,0.3); emote("!",1); sfx("blip"); }},
+
+  "pillow_hug": {cat:"bed-phone-imp",dur:2.5,pose:"hug_knees",start:()=>emote("♥",1.4),
+    draw:(ctx,i)=>{ const h=headPos(); const sq=Math.sin(i.age*3)*1; px(ctx,h.x-7,h.y+7+sq,13,11,P.pillow); }},
+
+  "phone_drop_face": {cat:"bed-phone-imp",dur:2,pose:"lie",world:()=>{WORLD.phoneOut=true;},
+    end:()=>{WORLD.phoneOut=false;},
+    draw:(ctx,i)=>{ const h=headPos(); const fall=Math.min(1,i.t*2.2); const y=h.y-32+fall*30; px(ctx,h.x-2,y,4,7,"#111111"); px(ctx,h.x-1,y+1,2,4,"#8ad0f0"); if(fall>=1&&!i.mem.hit){ i.mem.hit=1; emote("!",0.8); sfx("blip"); } }},
+
+  "phone_toss_bedend": {cat:"bed-phone-imp",dur:1.5,pose:"lie",world:()=>{WORLD.phoneOut=false;},
+    start:()=>sfx("blip"),
+    draw:(ctx,i)=>{ const h=headPos(); const sx=h.x, ex=R.bed.x+R.bed.w-12; const x=sx+(ex-sx)*i.t; const y=h.y-Math.sin(i.t*Math.PI)*22; px(ctx,x-2,y,4,7,"#111111"); px(ctx,x-1,y+1,2,3,"#8ad0f0"); }},
+
+  "photo_scroll_pause": {cat:"bed-phone-imp",dur:3,pose:"lie_phone",world:()=>{WORLD.phoneOut=true;},
+    start:()=>{ C.gaze="phone"; },
+    end:()=>{WORLD.phoneOut=false;},
+    draw:(ctx,i)=>{ if((i.age%0.6)<0.4) px(ctx,R.pillow.x+16,R.bed.y-6,4,3,"#8ad0f0"); if(i.t>0.7&&!i.mem.s){ i.mem.s=1; emote("…",1.4); spawn(headPos().x+2,headPos().y-2,0.3,-0.3,1.4,"#cfc6e8",1,0); } }},
+
+  "alarm_dismiss": {cat:"bed-phone-imp",dur:1,pose:"lie",start:()=>sfx("blip"),
+    draw:(ctx,i)=>{ if(i.t<0.55&&(Math.floor(i.age*12)%2)) px(ctx,R.crate.x+2,R.crate.y-5,5,8,"#8ad0f0"); const h=headPos(); const reach=Math.min(1,i.t*1.6); px(ctx,h.x+5,h.y+5,4+reach*16,2,"#d99a8c"); }},
+
+  "type_delete_type": {cat:"bed-phone-imp",dur:3,pose:"lie_phone",world:()=>{WORLD.phoneOut=true;},
+    start:()=>C.gaze="phone",
+    end:()=>{WORLD.phoneOut=false;},
+    draw:(ctx,i)=>{ const c=(i.age%1.6)/1.6; const n=c<0.6?Math.floor(c/0.2)+1:Math.max(0,3-Math.floor((c-0.6)/0.18)); const h=headPos(); for(let k=0;k<n;k++) px(ctx,h.x+9+k*4,h.y-7,2,2,"#cfc6e8"); }},
+
+  "blanket_shift": {cat:"bed-phone-imp",dur:2.5,pose:"lie",
+    draw:(ctx,i)=>{ const h=headPos(); if(i.t<0.4){ const w=Math.sin(i.t/0.4*Math.PI)*5; px(ctx,R.bed.x+10,R.bed.y+4,R.bed.w-20,3,P.blanket); px(ctx,R.bed.x+12+w,R.bed.y+2,20,3,P.blanket2); } else { px(ctx,h.x-12,h.y-2,R.bed.w-8,16,P.blanket); px(ctx,h.x-10,h.y-4,R.bed.w-14,4,P.blanket2); } }},
+
+  "get_dressed_finally": {cat:"bed-phone-imp",dur:3,pose:"stand",at:"bed",start:()=>emote("♪",1.4),
+    draw:(ctx,i)=>{ const bob=Math.sin(i.age*4)*2; const hx=R.bed.x+R.bed.w/2, hy=R.bed.y-15+bob; px(ctx,hx-4,hy,8,7,"#d99a8c"); px(ctx,hx-4,hy-3,8,3, i.t>0.5?"#6a7b8c":"#3a4450"); px(ctx,hx-5,hy+6,10,3, i.t>0.5?"#6a7b8c":"#3a4450"); }}
+},
+/* gaming-music */
+{
+  "console_off": {cat:"gaming-music",dur:0.8,world:()=>{WORLD.consoleOn=false;WORLD.tvState="off";bump();},start:()=>{sfx("blip");emote("…",0.8);spawn(R.tv.x+3,R.tv.y+2,0,-0.3,0.6,"#88e0a0",1,0);}},
+
+  "rage_pause": {cat:"gaming-music",dur:1.6,pose:"sit_floor",hold:"controller",start:(i)=>{emote("!",0.7);C.gaze="up";fxShake(1.5,0.3);},end:()=>{C.gaze=null;}},
+
+  "headset_on": {cat:"gaming-music",dur:0.8,world:()=>{WORLD.headphones=true;bump();},start:()=>{sfx("blip");emote("♪",0.8);}},
+
+  "tv_static": {cat:"gaming-music",dur:2.5,world:()=>{WORLD.tvState="static";bump();},draw:(ctx,i)=>{ for(let k=0;k<14;k++){ let x=R.tv.x+Math.floor(Math.random()*R.tv.w), y=R.tv.y+Math.floor(Math.random()*R.tv.h); px(ctx,x,y,1,1,Math.random()<0.5?"#e8e8e8":"#2a2a2a"); } }},
+
+  "game_over_screen": {cat:"gaming-music",dur:2.6,world:()=>{WORLD.tvState="gameover";bump();},start:()=>sfx("crack"),draw:(ctx,i)=>{ px(ctx,R.tv.x,R.tv.y,R.tv.w,R.tv.h,"#280606"); if((i.age%0.9)<0.6){ let cx=R.tv.x+Math.max(2,Math.floor((R.tv.w-14)/2)), cy=R.tv.y+Math.floor(R.tv.h/2)-2; for(let k=0;k<7;k++) px(ctx,cx+k*2,cy,1,4,"#e83636"); } }},
+
+  "afk_menu_loop": {cat:"gaming-music",dur:3,world:()=>{WORLD.tvState="game";bump();},draw:(ctx,i)=>{ let a=0.25+0.4*Math.abs(Math.sin(i.age*3)); px(ctx,R.tv.x+3,R.tv.y+Math.floor(R.tv.h/2)-1,Math.max(4,R.tv.w-6),3,`rgba(130,200,255,${a})`); }},
+
+  "unplug_cable": {cat:"gaming-music",dur:1.4,world:()=>{WORLD.consoleOn=false;WORLD.tvState="off";bump();},start:()=>{emote("…",1.2);sfx("blip");spawn(R.tv.x+2,R.tv.y+R.tv.h-2,-0.4,0.3,1,"#555555",1,0.03);}},
+
+  "vinyl_off": {cat:"gaming-music",dur:0.8,world:()=>{WORLD.vinyl=false;bump();},start:()=>{sfx("blip");emote("…",0.8);}},
+
+  "volume_up_gesture": {cat:"gaming-music",dur:1.6,start:()=>emote("♪",1.4),update:(i)=>{ if((i.age%0.4)<0.05){ let h=headPos(); spawn(h.x+4,h.y-2,0.3,-0.6,1.2,"#c8b0ff",1,0); } }}
+},
+/* substances-selfcare */
+{
+  "stub_out": {cat:"substances-selfcare",dur:1.5,requires:()=>!(S&&S.settings&&S.settings.substances===false),
+    update:(i)=>{ if(i.age<0.6 && (i.age%0.18)<0.05) spawn(R.crate.x+6,R.crate.y-2,(Math.random()-0.5)*0.2,-0.4,1.1,"rgba(200,196,188,0.5)",1,-0.002); },
+    draw:(ctx,i)=>{ px(ctx,R.crate.x+3,R.crate.y+1,7,1,"#3a3a3a"); const e=Math.max(0,1-i.t*1.7); if(e>0) px(ctx,R.crate.x+5,R.crate.y,2,1,"rgba(255,"+Math.round(110*e)+",40,"+(0.4+0.6*e)+")"); },
+    end:()=>sfx("blip")},
+
+  "bong_hit_implied": {cat:"substances-selfcare",dur:3,requires:()=>!(S&&S.settings&&S.settings.substances===false),
+    start:()=>C.gaze="floor",
+    update:(i)=>{ if((i.age%0.4)<0.06) spawn(4,150+Math.random()*22,0.5+Math.random()*0.35,-0.12,2.4,"rgba(200,210,220,0.45)",2,-0.003); }},
+
+  "incense_light": {cat:"substances-selfcare",dur:2.5,at:"window",
+    world:()=>{WORLD.incense=true;bump();},
+    update:(i)=>{ if((i.age%0.5)<0.08) spawn(R.window.x+10,R.window.y+R.window.h-6,(Math.random()-0.5)*0.15,-0.5,2.5,"rgba(210,205,225,0.45)",1,-0.003); },
+    draw:(ctx)=>{ px(ctx,R.window.x+9,R.window.y+R.window.h-6,1,5,"#7a5a3a"); px(ctx,R.window.x+9,R.window.y+R.window.h-7,1,1,"#ff8a3a"); }},
+
+  "fridge_beer_stare": {cat:"substances-selfcare",dur:3,at:"door",requires:()=>!(S&&S.settings&&S.settings.substances===false),
+    world:()=>{WORLD.fridgeOpen=true;bump();},
+    start:()=>C.gaze="floor",
+    draw:(ctx,i)=>{ const open=i.t<0.78?1:Math.max(0,1-(i.t-0.78)/0.22); if(open>0) dither(ctx,R.door.x-18,214,16,26,"rgba(255,230,160,"+(0.5*open)+")","rgba(255,230,160,0)"); },
+    end:()=>{WORLD.fridgeOpen=false;bump(); emote("…",1.2);}},
+
+  "refill_glass": {cat:"substances-selfcare",dur:2,at:"desk",
+    update:(i)=>{ if((i.age%0.25)<0.05 && i.t<0.7) spawn(R.desk.x+40,R.desk.y-7,0,0.7,0.5,"#8ad0f0",1,0.1); },
+    draw:(ctx,i)=>{ const lvl=Math.min(1,i.t*1.3); px(ctx,R.desk.x+38,R.desk.y-8,5,8,"rgba(180,220,240,0.22)"); px(ctx,R.desk.x+38,R.desk.y-8+Math.round((1-lvl)*7),5,Math.round(lvl*7)+1,"#8ad0f0"); }},
+
+  "curtain_close": {cat:"substances-selfcare",dur:1.5,at:"window",
+    world:()=>{WORLD.curtains=3;bump();},
+    draw:(ctx,i)=>{ const w=Math.round(i.t*(R.window.w/2)); px(ctx,R.window.x,R.window.y,w,R.window.h,"rgba(60,50,80,0.55)"); px(ctx,R.window.x+R.window.w-w,R.window.y,w,R.window.h,"rgba(60,50,80,0.55)"); }},
+
+  "window_crack_open": {cat:"substances-selfcare",dur:2.5,at:"window",
+    start:()=>sfx("blip"),
+    update:(i)=>{ if((i.age%0.3)<0.05) spawn(R.window.x+R.window.w-4,R.window.y+20+Math.random()*30,-0.6-Math.random()*0.3,-0.05,2.0,"rgba(200,230,240,0.4)",1,0); },
+    draw:(ctx,i)=>{ const g=Math.round(Math.min(6,i.t*8)); px(ctx,R.window.x+R.window.w-g,R.window.y+Math.round(R.window.h/2)-8,g,16,"rgba(150,190,210,0.5)"); }},
+
+  "shower_quick": {cat:"substances-selfcare",dur:5,at:"door",
+    update:(i)=>{ if((i.age%0.25)<0.06) spawn(R.door.x+8,R.door.y+R.door.h-4,(Math.random()-0.5)*0.3,-0.4-Math.random()*0.2,3.0,"rgba(230,235,240,0.35)",2,-0.004); },
+    draw:(ctx)=>{ dither(ctx,R.door.x+2,R.door.y+20,20,60,"rgba(235,240,245,0.18)","rgba(235,240,245,0)"); }},
+
+  "brush_teeth": {cat:"substances-selfcare",dur:3,at:"door",
+    update:(i)=>{ if((i.age%0.4)<0.06) spawn(headPos().x+2,headPos().y+4,(Math.random()-0.5)*0.4,0.1,0.8,"#eef4f8",1,0.05); },
+    draw:(ctx,i)=>{ const cx=headPos().x+10, cy=headPos().y-6; px(ctx,cx,cy,8,7,"rgba(20,30,40,0.6)"); const f=Math.floor(i.t*4); for(let k=0;k<4;k++) px(ctx,cx+1+k*2,cy+3,1,1,k<=f?"#8ad0f0":"#556"); }},
+
+  "make_bed_half": {cat:"substances-selfcare",dur:2,at:"bed",
+    update:(i)=>{ if((i.age%0.4)<0.06) spawn(R.bed.x+20+i.t*70,R.bed.y-2,(Math.random()-0.5)*0.3,-0.3,0.7,"#e8e0d0",1,0); },
+    draw:(ctx,i)=>{ const x=R.bed.x+8+Math.round(i.t*(R.bed.w-24)); px(ctx,x,R.bed.y-6,4,3,"rgba(255,255,255,0.25)"); }},
+
+  "eat_something_real": {cat:"substances-selfcare",dur:2.5,at:"desk",
+    world:()=>{WORLD.pizzaBox=false;bump();},
+    update:(i)=>{ if((i.age%0.5)<0.08 && i.t<0.6) spawn(R.desk.x+50,R.desk.y-8,(Math.random()-0.5)*0.3,-0.4,0.9,"rgba(220,230,210,0.5)",1,-0.002); },
+    draw:(ctx)=>{ px(ctx,R.desk.x+46,R.desk.y-4,10,3,"#d8d0c0"); px(ctx,R.desk.x+47,R.desk.y-6,8,2,"#7ab86a"); }},
+
+  "splash_face": {cat:"substances-selfcare",dur:2,at:"door",
+    start:()=>emote("!",0.8),
+    update:(i)=>{ if((i.age%0.35)<0.06){ for(let k=0;k<4;k++) spawn(headPos().x+2,headPos().y+2,(Math.random()-0.5)*1.2,0.3+Math.random()*0.4,0.6,"#8ad0f0",1,0.15); } }}
+},
+/* cat-emotes */
+{
+  "cat_ear_twitch": { cat:"cat-emotes", dur:0.9, draw:(ctx,i)=>{
+      const f=Math.sin(i.age*30)>0?1:0;
+      px(ctx,CAT.x-4,CAT.y-9,2,3,P.leaf||"#caa27a");
+      px(ctx,CAT.x+2,CAT.y-9-f,2,3+f,"#e0b487");
+  }},
+
+  "cat_knead": { cat:"cat-emotes", dur:2, start:()=>CAT.pose="sit", draw:(ctx,i)=>{
+      const a=Math.sin(i.age*10)>0?1:0;
+      px(ctx,CAT.x-3,CAT.y-1-a,2,2,"#f0d0a8");
+      px(ctx,CAT.x+1,CAT.y-1-(1-a),2,2,"#f0d0a8");
+  }},
+
+  "cat_walk_to_rug": { cat:"cat-emotes", dur:2.5, start:()=>{ CAT.pose="walk"; CAT.target=WP.rug.x; },
+     end:()=>{ CAT.target=null; CAT.pose="sit"; }},
+
+  "cat_headbutt_hand": { cat:"cat-emotes", dur:1.6, start:(i)=>{ i.mem.x0=CAT.x; CAT.pose="sit"; },
+     update:(i)=>{ CAT.x=i.mem.x0+Math.sin(i.age*6)*4*(C.face||1); if(i.age>0.4&&!i.mem.h){emote("♥",1);i.mem.h=1;} },
+     end:(i)=>{ CAT.x=i.mem.x0; }},
+
+  "blush": { cat:"cat-emotes", dur:1.6, start:()=>emote("♥",0.8), draw:(ctx,i)=>{
+      const h=headPos(), a=Math.sin(i.t*Math.PI);
+      dither(ctx,h.x-5,h.y+5,3,2,"#ff9bb0","rgba(255,155,176,0)");
+      dither(ctx,h.x+3,h.y+5,3,2,"#ff9bb0","rgba(255,155,176,0)");
+  }},
+
+  "wince": { cat:"cat-emotes", dur:0.6, start:()=>{ emote("!",0.5); fxShake(1.2,0.2); }, draw:(ctx,i)=>{
+      if(i.age<0.35){ const h=headPos(); px(ctx,h.x-3,h.y+3,3,1,"#3a2f4a"); px(ctx,h.x+2,h.y+3,3,1,"#3a2f4a"); }
+  }}
+},
+/* room */
+{
+"plant_new_leaf": { cat:"room", dur:1.5, world:()=>{ WORLD.plantLeaves=Math.min(8,WORLD.plantLeaves+1); bump(); },
+  start:()=>{ for(let k=0;k<5;k++) spawn(R.plant.x+6,R.plant.y-10,(Math.random()-0.5)*0.6,-Math.random()*0.5-0.2,1,"#7ec850",1,-0.01); emote("♪",1); },
+  draw:(ctx,i)=>{ let s=Math.min(1,i.t*2), h=Math.round(s*6); px(ctx,R.plant.x+6,R.plant.y-10-h,2,h,"#7ec850"); if(s>0.6) px(ctx,R.plant.x+4,R.plant.y-12,2,1,"#9ee070"); } },
+
+"laundry_shove": { cat:"room", dur:1.5, requires:()=>WORLD.laundry>0, world:()=>{ WORLD.laundry=Math.max(0,WORLD.laundry-0.5); bump(); },
+  start:()=>{ for(let k=0;k<8;k++) spawn(420,240,(Math.random()-0.5)*1.4,-Math.random()*0.5,0.8,P.blanket2||"#cfc6e8",1,0.04); sfx("blip"); },
+  draw:(ctx,i)=>{ if(i.t<0.6){ let w=Math.round((1-i.t)*10)+4; px(ctx,418,242-w,w,w,"#8a8296"); } } },
+
+"pizza_box_close": { cat:"room", dur:1.2, requires:()=>WORLD.pizzaBox, world:()=>{ WORLD.pizzaBox=false; bump(); },
+  start:()=>sfx("blip"),
+  draw:(ctx,i)=>{ let lidH=Math.round((1-i.t)*9)+1; px(ctx,R.rug.x+12,R.rug.y-1,14,3,"#a9805a"); px(ctx,R.rug.x+12,R.rug.y-lidH,14,2,"#c9a06a"); } },
+
+"fridge_snack": { cat:"room", dur:2, at:"door", world:()=>{ WORLD.fridgeOpen=true; }, start:()=>C.gaze="door",
+  update:(i)=>{ if((i.age%0.4)<0.06) spawn(headPos().x,headPos().y+2,(Math.random()-0.5)*0.5,-0.3,0.6,"#e8d8a0",1,0.02); },
+  draw:(ctx,i)=>{ if(i.t<0.7) dither(ctx,R.door.x-14,150,12,44,"rgba(255,240,180,0.5)","rgba(255,240,180,0)"); },
+  end:()=>{ WORLD.fridgeOpen=false; } },
+
+"kettle_on": { cat:"room", dur:2.5, at:"desk",
+  update:(i)=>{ if((i.age%0.25)<0.06) spawn(R.desk.x+8,R.desk.y-6,(Math.random()-0.5)*0.3,-0.5,1.2,"#e8e8f0",1,-0.005); },
+  draw:(ctx,i)=>{ px(ctx,R.desk.x+4,R.desk.y-6,8,6,"#8a8a9a"); px(ctx,R.desk.x+11,R.desk.y-4,2,2,"#8a8a9a"); px(ctx,R.desk.x+5,R.desk.y-3,2,2,(i.age%0.6)<0.3?"#f08050":"#a04030"); } },
+
+"radio_toggle": { cat:"room", dur:1.5,
+  start:()=>{ emote("♪",1.3); for(let k=0;k<4;k++) spawn(R.shelf.x+12,R.shelf.y-4,(Math.random()-0.3)*0.5,-Math.random()*0.5-0.2,1.4,"#f0c0e0",1,-0.01); sfx("blip"); },
+  draw:(ctx,i)=>{ px(ctx,R.shelf.x+4,R.shelf.y-6,10,6,"#5a4a3a"); if((i.age%0.4)<0.2) px(ctx,R.shelf.x+12,R.shelf.y-4,1,1,"#f0e080"); } },
+
+"poster_straighten": { cat:"room", dur:1.2, start:()=>emote("♪",0.8),
+  draw:(ctx,i)=>{ let tilt=Math.max(0,Math.round((1-Math.min(1,i.t*1.5))*3)), x=R.window.x-42, y=40+tilt; px(ctx,x,y,16,20,"#d8c8a8"); px(ctx,x+2,y+2,12,4,"#a86a6a"); px(ctx,x+3,y+9,10,1,"#8a8296"); } },
+
+"book_pick_up": { cat:"room", dur:8, pose:"sit_floor", at:"rug", start:()=>C.gaze="book",
+  draw:(ctx,i)=>{ let h=headPos(); px(ctx,h.x-8,h.y+16,16,10,"#f0ead8"); px(ctx,h.x,h.y+16,1,10,"#c0b090"); if((i.age%1)<0.5){ px(ctx,h.x-7,h.y+18,6,1,"#b0a080"); px(ctx,h.x+2,h.y+18,6,1,"#b0a080"); } } },
+
+"book_toss": { cat:"room", dur:1, start:()=>sfx("blip"),
+  draw:(ctx,i)=>{ let x=Math.round(C.x+i.t*(R.shelf.x-C.x)), y=Math.round(C.y-30-Math.sin(i.t*Math.PI)*32); px(ctx,x,y,8,5,"#a86a6a"); px(ctx,x+7,y,1,5,"#e8dcc0"); } }
+},
+/* window-world */
+{
+  "lightning_far": {cat:"window-world",dur:1.2,cooldown:20,draw:(ctx,i)=>{ let a=0; if(i.age<0.07)a=0.55; else if(i.age>0.16&&i.age<0.23)a=0.4; else if(i.age>0.28&&i.age<0.32)a=0.2; if(a>0) dither(ctx,300,36,96,76,"rgba(214,226,255,"+a+")","rgba(214,226,255,0)"); }},
+
+  "city_flicker_wave": {cat:"window-world",dur:2.2,draw:(ctx,i)=>{ const sweep=(i.age/i.dur)*112-10; ctx.save();ctx.beginPath();ctx.rect(300,36,96,76);ctx.clip(); for(let k=0;k<11;k++){ const x=304+k*8, d=Math.abs(x-300-sweep); if(d<11){ const a=1-d/11; px(ctx,x,96-(k%4)*4,2,3,"rgba(255,224,160,"+(0.85*a)+")"); } } ctx.restore(); }},
+
+  "fireworks_rare": {cat:"window-world",dur:1.5,cooldown:25,start:()=>sfx("blip"),draw:(ctx,i)=>{ const cx=344,cy=56,r=i.t*24,al=Math.max(0,1-i.t); for(let k=0;k<12;k++){ const a=k/12*6.283, col=(k%2?"255,180,200":"255,215,140"); px(ctx,Math.round(cx+Math.cos(a)*r),Math.round(cy+Math.sin(a)*r+i.t*i.t*10),1,1,"rgba("+col+","+al+")"); } }},
+
+  "fog_roll": {cat:"window-world",dur:3.5,draw:(ctx,i)=>{ const off=(i.age*9)%20; ctx.save();ctx.beginPath();ctx.rect(300,36,96,76);ctx.clip(); for(let x=280;x<400;x+=20) dither(ctx,x+off,99,18,11,"rgba(202,207,218,0.35)","rgba(202,207,218,0)"); ctx.restore(); }},
+
+  "moon_halo_pulse": {cat:"window-world",dur:2.5,draw:(ctx,i)=>{ const cx=372,cy=52,p=0.5+0.5*Math.sin(i.age*3),R2=6+p*5; dither(ctx,cx-R2,cy-R2,R2*2,R2*2,"rgba(230,235,255,"+(0.22*p+0.08)+")","rgba(230,235,255,0)"); px(ctx,cx-3,cy-3,6,6,"#eef0ff"); }},
+
+  "streetlight_flicker": {cat:"window-world",dur:2,draw:(ctx,i)=>{ const flick=(Math.sin(i.age*31)+Math.sin(i.age*13))>-1.2, x=316,y=104; px(ctx,x,y-6,1,6,"rgba(120,110,100,0.8)"); if(flick){ px(ctx,x-1,y-7,3,2,"rgba(255,220,150,0.9)"); dither(ctx,x-3,y-9,7,7,"rgba(255,210,130,0.35)","rgba(255,210,130,0)"); } }},
+
+  "neon_sign_toggle": {cat:"window-world",dur:3,draw:(ctx,i)=>{ const on=(i.age%1)<0.7, x=350,y=94; if(on){ px(ctx,x,y,10,3,"rgba(255,90,170,0.9)"); dither(ctx,x-2,y-2,14,7,"rgba(255,90,170,0.4)","rgba(255,90,170,0)"); } }},
+
+  "plane_blink_cross": {cat:"window-world",dur:4,draw:(ctx,i)=>{ const x=Math.round(302+i.t*92),y=48; px(ctx,x,y,2,1,"rgba(210,210,220,0.7)"); if((i.age%0.6)<0.18) px(ctx,x,y,1,1,"rgba(255,60,60,0.95)"); }}
+},
+/* fx-meta */
+{
+  "dream_desat": {cat:"fx-meta",dur:2,layer:"fx",draw:(ctx,i)=>{ const a=Math.sin(i.t*Math.PI)*0.35; dither(ctx,0,0,480,270,`rgba(198,204,214,${a})`,"rgba(198,204,214,0)"); }},
+
+  "confetti_win": {cat:"fx-meta",dur:2,start:()=>{ const c=["#f0a0b0","#f0d080","#8ad0f0","#a0e0a0","#c0a0f0"]; for(let k=0;k<14;k++) spawn(240+(Math.random()-0.5)*90,54,(Math.random()-0.5)*3,-Math.random()*2-1,1.6,c[k%5],2,0.06); emote("♥",1.4); sfx("blip"); },update:(i)=>{ if((i.age%0.25)<0.05){ const c=["#f0a0b0","#f0d080","#8ad0f0","#a0e0a0"]; for(let k=0;k<4;k++) spawn(120+Math.random()*240,40,(Math.random()-0.5)*2,-Math.random()*1.5,1.4,c[k%4],2,0.06); } }},
+
+  "letterbox_cinematic": {cat:"fx-meta",dur:3,layer:"fx",draw:(ctx,i)=>{ const t=i.t; let e=t<0.15?t/0.15:(t>0.85?(1-t)/0.15:1); const h=Math.round(28*Math.max(0,Math.min(1,e))); px(ctx,0,0,480,h,"#000"); px(ctx,0,270-h,480,h,"#000"); }},
+
+  "lamp_flicker": {cat:"fx-meta",dur:1,requires:()=>WORLD.lampOn,draw:(ctx,i)=>{ const dark=(i.age>0.15&&i.age<0.22)||(i.age>0.4&&i.age<0.46)||(i.age>0.62&&i.age<0.7); if(dark) dither(ctx,R.lamp.x-12,R.lamp.y-16,26,24,"rgba(15,12,22,0.55)","rgba(15,12,22,0)"); }},
+
+  "laptop_wake": {cat:"fx-meta",dur:1.5,start:()=>sfx("blip"),draw:(ctx,i)=>{ const a=Math.min(1,i.t*1.6); px(ctx,R.desk.x+30,R.desk.y-12,16,10,`rgba(140,200,240,${0.85*a})`); dither(ctx,R.desk.x+26,R.desk.y-16,24,16,`rgba(140,200,240,${0.4*a})`,"rgba(140,200,240,0)"); }},
+
+  "laptop_sleep": {cat:"fx-meta",dur:1.5,draw:(ctx,i)=>{ const a=Math.max(0,1-i.t*1.4); px(ctx,R.desk.x+30,R.desk.y-12,16,10,`rgba(140,200,240,${0.85*a})`); dither(ctx,R.desk.x+26,R.desk.y-16,24,16,`rgba(140,200,240,${0.4*a})`,"rgba(140,200,240,0)"); }},
+
+  "door_glance": {cat:"fx-meta",dur:1.6,start:()=>{ C.gaze="door"; C.face=1; emote("…",1.2); },end:()=>{ C.gaze=null; }},
+
+  "door_open_crack": {cat:"fx-meta",dur:2.5,start:()=>{ C.gaze="door"; C.face=1; sfx("crack"); },draw:(ctx,i)=>{ const t=i.t; let e=Math.max(0,Math.min(1,t<0.35?t/0.35:(t>0.65?(1-t)/0.35:1))); const w=Math.round(6*e); px(ctx,R.door.x,R.door.y+6,w,R.door.h-10,`rgba(255,230,170,${0.7*e})`); dither(ctx,R.door.x+w,R.door.y+6,10,R.door.h-10,`rgba(255,230,170,${0.35*e})`,"rgba(255,230,170,0)"); },end:()=>{ C.gaze=null; }}
+}
+);
+for(const id in EXTRA){ if(!ACT[id]) A(id, EXTRA[id]); }
+
+/* every catalog id that still has no impl gets a gentle generic emote so nothing is dead */
+for(const id of CATALOG){ if(!ACT[id]) A(id,{cat:"todo",dur:1.4,start:()=>emote("…",1.2)}); }
+
+/* ============================================================
+   AUTONOMOUS IDLE POOL — keeps the room alive when nobody talks
+   ============================================================ */
+let idleT=0, idleNext=8;
+function idleTick(){ idleT+=dt; if(idleT<idleNext||blockingId||winPhase>=0) return;
+  idleT=0; idleNext=6+Math.random()*8;
+  const pool=STAGE_ACTIONS[stageOf()].concat(["cat_tail_flick","cat_stretch_long","sigh_visible","ellipsis_bubble"]);
+  // ambient world flourishes at night
+  if(isNight() && Math.random()<0.25){ playAct(Math.random()<0.5?"shooting_star":"train_pass"); return; }
+  const id=pool[(Math.random()*pool.length)|0]; playAct(id);
+}
+
+/* ============================================================
+   TRIGGER: parse @@hope:H|mood:M|act:IDS@@ + keyword fallback
+   ============================================================ */
+let currentMood="soft";
+function parseTag(reply){
+  let hope=0, acts=[], mood=null;
+  const m=reply.match(/@@([^@]*)@@\s*$/);
+  if(m){ const body=m[1];
+    const hm=body.match(/hope:(-?1|0)/); if(hm) hope=parseInt(hm[1],10);
+    const mm=body.match(/mood:(flat|dry|soft|open|bright)/); if(mm) mood=mm[1];
+    const am=body.match(/act:([a-z0-9_+]+)/); if(am && am[1]!=="none") acts=am[1].split("+");
+    reply=reply.replace(/\s*@@[^@]*@@\s*$/,"").trim();
+  }
+  acts=acts.filter(id=>ACT[id]); // drop unknown
+  return {reply, hope, acts, mood};
+}
+const KW=[[/cig|smok|light up/,"light_cig_window"],[/beer|drink|crack/,"crack_beer"],[/scroll|phone|feed/,"doomscroll"],
+  [/tired|sleep|nap|bed/,"stare_ceiling"],[/window|outside|sky|city/,"walk_to_window"],[/water|thirsty/,"drink_water"],
+  [/cat|kitty/,"cat_lap_sit"],[/game|controller|play/,"grab_controller"],[/laugh|ha|funny/,"laugh_real"],
+  [/breath|calm/,"deep_breath"],[/curtain|light in/,"curtain_open_notch"],[/plant/,"water_plant"]];
+function fallbackActs(reply){ const low=reply.toLowerCase(); for(const [re,id] of KW){ if(re.test(low)) return [id]; } return ["sigh_visible"]; }
+
+/* ============================================================
+   COMPOSITE FRAME LOOP
+   ============================================================ */
 function frame(ts){
-  T = ts/1000;
-  if (S) drawRoom();
+  dt=Math.min(0.05,(ts-lastTs)/1000)||0; lastTs=ts; T=ts/1000;
+  if(!S){ requestAnimationFrame(frame); return; }
+  if(gallery){ galleryTick(); }
+  // ease hope + rebuild bg on cache-key change
+  hope01 += ((Math.min(S.hope,100)/100)-hope01)*0.03;
+  const key=[Math.round(hope01*40), new Date().getMinutes(), moodyDay?1:0, WORLD.version, winPhase>=0?1:0, gallery?galIdx:0].join(":");
+  if(key!==bgKey){ bgKey=key; drawBG(); }
+
+  updateChar(); idleTick(); updateActions();
+
+  // ---- anim layer ----
+  AN.x.clearRect(0,0,W,H);
+  drawWindowLife();
+  // RGB keyboard strip life
+  DECOR.rgb0=(DECOR.rgb0+dt*40)%360; AN.x.fillStyle=`hsl(${DECOR.rgb0},70%,60%)`; if(isNight()) AN.x.fillRect(R.desk.x+40,R.desk.y+2,40,2);
+  // clock hands (real time)
+  drawClockHands(AN.x);
+  drawCat(AN.x);
+  // character (unless a lie/lie_phone pose which is drawn where the bed is)
+  drawCharacter(AN.x);
+  overlays(AN.x);
+  drawActions("anim");
+  updateParticles();
+
+  // ---- fx layer (screen-space) ----
+  FX.x.clearRect(0,0,W,H);
+  drawActions("fx");
+  if(winPhase>=0) winCutscene(FX.x);
+  // vignette pulse
+  if(fx.vig>0){ const gr=FX.x.createRadialGradient(W/2,H*0.42,W*0.3,W/2,H*0.42,W*0.7);
+    gr.addColorStop(0,"rgba(0,0,0,0)"); gr.addColorStop(1,`rgba(4,3,10,${fx.vig})`); FX.x.fillStyle=gr; FX.x.fillRect(0,0,W,H); fx.vig*=0.96; }
+  if(fx.flashA>0){ FX.x.fillStyle=`rgba(${fx.flashCol},${fx.flashA})`; FX.x.fillRect(0,0,W,H); fx.flashA*=0.88; if(fx.flashA<0.01)fx.flashA=0; }
+  if(fx.letterbox>0){ const b=fx.letterbox*40; FX.x.fillStyle="#000"; FX.x.fillRect(0,0,W,b); FX.x.fillRect(0,H-b,W,b); }
+
+  // ---- composite with shake + zoom ----
+  fx.zoom+=(fx.zoomTarget-fx.zoom)*0.06;
+  let sx=0,sy=0; if(fx.shakeT>0){ fx.shakeT-=dt; sx=(Math.random()-0.5)*fx.shakeMag*2; sy=(Math.random()-0.5)*fx.shakeMag*2; }
+  g.clearRect(0,0,W,H); g.save();
+  const z=fx.zoom; g.translate(W/2,H/2); g.scale(z,z); g.translate(-W/2+sx,-H/2+sy);
+  g.drawImage(BG.c,0,0); g.drawImage(AN.c,0,0); g.restore();
+  g.drawImage(FX.c,0,0);
+  if(gallery) drawGalleryLabel();
+
   requestAnimationFrame(frame);
 }
+function drawCharacter(ctx){ const c=ccol(), br=Math.sin(T*2.2)>0?1:0; const pf=POSES[C.pose]||POSES.stand; pf(ctx,C.x,C.y,c,br); }
+function drawClockHands(ctx){ const d=new Date(), cx=R.clock.x, cy=R.clock.y;
+  const mh=(d.getMinutes()/60)*6.28-1.57, hh=((d.getHours()%12)/12)*6.28-1.57;
+  ctx.strokeStyle="#3a2c46"; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+Math.cos(hh)*2.5,cy+Math.sin(hh)*2.5); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+Math.cos(mh)*3.5,cy+Math.sin(mh)*3.5); ctx.stroke(); }
 requestAnimationFrame(frame);
 
-/* ---------- lofi sound: rain + vinyl crackle + soft pad ---------- */
-let AC=null, sndOn=false, sndNodes=[];
-function noiseBuf(ac, secs){
-  const b = ac.createBuffer(1, ac.sampleRate*secs, ac.sampleRate);
-  const d = b.getChannelData(0);
-  for (let i=0;i<d.length;i++) d[i] = Math.random()*2-1;
-  return b;
-}
-function startSound(){
-  AC = AC || new (window.AudioContext||window.webkitAudioContext)();
-  AC.resume();
-  const master = AC.createGain(); master.gain.value = 0.5; master.connect(AC.destination);
-  // rain: looped noise → lowpass
-  const rain = AC.createBufferSource(); rain.buffer = noiseBuf(AC,3); rain.loop = true;
-  const rf = AC.createBiquadFilter(); rf.type="lowpass"; rf.frequency.value=650;
-  const rg = AC.createGain(); rg.gain.value = moodyDay ? 0.055 : 0.028;
-  rain.connect(rf).connect(rg).connect(master); rain.start();
-  // vinyl crackle: noise → highpass, gated by random LFO-ish gain automation
-  const cr = AC.createBufferSource(); cr.buffer = noiseBuf(AC,2); cr.loop = true;
-  const cf = AC.createBiquadFilter(); cf.type="highpass"; cf.frequency.value=3800;
-  const cg = AC.createGain(); cg.gain.value = 0.012;
-  cr.connect(cf).connect(cg).connect(master); cr.start();
-  // pad: slow lofi chord loop through a lazy lowpass
-  const chords = [[220,261.6,329.6],[174.6,220,261.6],[196,246.9,293.7],[164.8,207.7,246.9]]; // Am F G(ish) E-ish
-  const pf = AC.createBiquadFilter(); pf.type="lowpass"; pf.frequency.value=900; pf.Q.value=0.4;
-  const pg = AC.createGain(); pg.gain.value = 0.0; pg.connect(master); pf.connect(pg);
-  const oscs = [0,1,2].map(()=>{ const o=AC.createOscillator(); o.type="triangle"; o.connect(pf); o.start(); return o; });
-  let ci = 0;
-  function nextChord(){
-    if (!sndOn) return;
-    const c = chords[ci++ % chords.length], t0 = AC.currentTime;
-    oscs.forEach((o,i)=>{ o.frequency.setTargetAtTime(c[i]*(1+((i-1)*0.0007)), t0, 0.6); });
-    pg.gain.cancelScheduledValues(t0);
-    pg.gain.setTargetAtTime(0.035, t0, 1.4);
-    pg.gain.setTargetAtTime(0.012, t0+3.4, 1.6);
-    sndNodes.timer = setTimeout(nextChord, 5200);
-  }
-  nextChord();
-  sndNodes = [rain,cr,...oscs,master]; sndNodes.timer = sndNodes.timer||null;
-}
-function stopSound(){
-  clearTimeout(sndNodes.timer);
-  sndNodes.forEach(n=>{ try{ n.stop ? n.stop() : n.disconnect(); }catch(e){} });
-  sndNodes = [];
-}
-document.getElementById("sndBtn").addEventListener("click", ()=>{
-  sndOn = !sndOn;
-  document.getElementById("sndBtn").textContent = "♪ sound: " + (sndOn?"on":"off");
-  sndOn ? startSound() : stopSound();
-});
-
-/* ---------- chat ---------- */
-const log = document.getElementById("log"), inp = document.getElementById("inp"),
-      send = document.getElementById("send"), chips = document.getElementById("chips"),
-      stL = document.getElementById("stL");
-
-function addMsg(text, who){
-  const d = document.createElement("div");
-  d.className = "msg " + who;
-  log.appendChild(d);
-  if (who === "them"){ // typewriter
-    let i = 0;
-    (function tick(){
-      d.textContent = text.slice(0, ++i);
-      log.scrollTop = log.scrollHeight;
-      if (i < text.length) setTimeout(tick, 18 + Math.random()*22);
-    })();
-  } else {
-    d.textContent = text;
-  }
-  log.scrollTop = log.scrollHeight;
-  return d;
-}
-function sysMsg(t){ const d=document.createElement("div"); d.className="msg sys"; d.textContent=t; log.appendChild(d); log.scrollTop=log.scrollHeight; }
-
-const OPENERS = {
-  low: ["hey. i'm here.", "you don't have to say anything. i'll sit with you.", "what did you eat today?", "can we open the curtain a tiny bit?"],
-  mid: ["tell me one thing you miss.", "want to put one song on?", "what's the smallest thing we could do right now?", "how about water. just water."],
-  high:["the light outside looks nice today.", "what would you do first, if we stepped out?", "one shoe. that's all i'm asking.", "i'm proud of you, you know."]
-};
-function offerChips(){
-  chips.innerHTML = "";
-  if (S.won || moodyDay) return;
-  if (Math.random() > 0.45) return;
-  const pool = S.hope<40 ? OPENERS.low : S.hope<75 ? OPENERS.mid : OPENERS.high;
-  const r = rng((Math.random()*1e9)|0);
-  [...pool].sort(()=>r()-0.5).slice(0,3).forEach(txt=>{
-    const b = document.createElement("button");
-    b.className="chip"; b.textContent=txt;
-    b.onclick = ()=>{ chips.innerHTML=""; sendMsg(txt); };
-    chips.appendChild(b);
-  });
+/* ============================================================
+   WIN CUTSCENE v2 — letterbox + walk-out + sunrise + fireworks
+   ============================================================ */
+function winCutscene(ctx){ winPhase+=dt; fx.letterbox=Math.min(1,winPhase/1.5);
+  // walk to door
+  if(winPhase<5){ C.target="door"; }
+  if(winPhase>2 && Math.random()<0.15){ const fx0=R.window.x+20+Math.random()*40; // fireworks
+    for(let k=0;k<12;k++) spawn(fx0,R.window.y+20,(Math.random()-0.5)*3,(Math.random()-0.5)*3,1.2,["#ffb75e","#ff7aa8","#5ec8c0","#b58cff"][k%4],1,0.02); }
+  if(winPhase>6){ px(ctx,R.door.x+3,R.door.y+3,R.door.w-6,R.door.h-6,"#ffe8bd");
+    ctx.fillStyle=`rgba(255,232,189,${Math.min((winPhase-6)/3,1)*0.9})`; ctx.fillRect(0,0,W,H); }
 }
 
-const MOODY_LINES = ["…", "not today. sorry.", "mm.", "*pulls the blanket up*", "i can hear you. i just… can't, today.", "…tomorrow. maybe."];
-function moodyReply(){
-  setTimeout(()=>{ addMsg(MOODY_LINES[(Math.random()*MOODY_LINES.length)|0], "them"); busy(false); }, 900+Math.random()*1400);
+/* ============================================================
+   AUDIO v2 — procedural lofi (Am7 Fmaj7 Cmaj7 G6), rain, crackle, sfx
+   ============================================================ */
+let AC=null, sndOn=false, sndNodes=[], master=null;
+function noiseBuf(ac,secs){ const b=ac.createBuffer(1,ac.sampleRate*secs,ac.sampleRate); const d=b.getChannelData(0);
+  for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1; return b; }
+function startSound(){ AC=AC||new (window.AudioContext||window.webkitAudioContext)(); AC.resume();
+  master=AC.createGain(); master.gain.value=0.5; master.connect(AC.destination);
+  const rain=AC.createBufferSource(); rain.buffer=noiseBuf(AC,3); rain.loop=true;
+  const rf=AC.createBiquadFilter(); rf.type="lowpass"; rf.frequency.value=650;
+  const rg=AC.createGain(); rg.gain.value=moodyDay?0.06:0.03; rain.connect(rf).connect(rg).connect(master); rain.start();
+  const cr=AC.createBufferSource(); cr.buffer=noiseBuf(AC,2); cr.loop=true;
+  const cf=AC.createBiquadFilter(); cf.type="highpass"; cf.frequency.value=3800;
+  const cg=AC.createGain(); cg.gain.value=0.012; cr.connect(cf).connect(cg).connect(master); cr.start();
+  // pad with tape wobble
+  const chords=[[220,261.6,329.6,392],[174.6,220,261.6,349.2],[130.8,164.8,196,261.6],[196,246.9,293.7,392]]; // Am7 Fmaj7 Cmaj7 G6
+  const pf=AC.createBiquadFilter(); pf.type="lowpass"; pf.frequency.value=950; pf.Q.value=0.4;
+  const pg=AC.createGain(); pg.gain.value=0; pg.connect(master); pf.connect(pg);
+  const lfo=AC.createOscillator(); lfo.frequency.value=0.15; const lg=AC.createGain(); lg.gain.value=3; lfo.connect(lg); lfo.start();
+  const oscs=[0,1,2,3].map(()=>{ const o=AC.createOscillator(); o.type="triangle"; lg.connect(o.detune); o.connect(pf); o.start(); return o; });
+  let ci=0; function nextChord(){ if(!sndOn) return; const c=chords[ci++%chords.length], t0=AC.currentTime;
+    oscs.forEach((o,i)=>o.frequency.setTargetAtTime(c[i],t0,0.6));
+    pg.gain.cancelScheduledValues(t0); pg.gain.setTargetAtTime(0.03,t0,1.2); pg.gain.setTargetAtTime(0.01,t0+3,1.4);
+    sndNodes.timer=setTimeout(nextChord,3900); } // ~62bpm feel
+  nextChord(); sndNodes=[rain,cr,lfo,...oscs]; }
+function stopSound(){ clearTimeout(sndNodes.timer); sndNodes.forEach(n=>{try{n.stop?n.stop():n.disconnect();}catch(e){}}); sndNodes=[]; }
+function sfx(kind){ if(!sndOn||!AC) return; const t0=AC.currentTime;
+  if(kind==="crack"){ const s=AC.createBufferSource(); s.buffer=noiseBuf(AC,0.1); const f=AC.createBiquadFilter(); f.type="bandpass"; f.frequency.value=1800;
+    const gg=AC.createGain(); gg.gain.setValueAtTime(0.15,t0); gg.gain.exponentialRampToValueAtTime(0.001,t0+0.12); s.connect(f).connect(gg).connect(master); s.start(); s.stop(t0+0.12); }
+  else if(kind==="blip"){ const o=AC.createOscillator(); o.type="sine"; o.frequency.value=660; const gg=AC.createGain(); gg.gain.setValueAtTime(0.08,t0); gg.gain.exponentialRampToValueAtTime(0.001,t0+0.15); o.connect(gg).connect(master); o.start(); o.stop(t0+0.15); }
 }
+document.getElementById("sndBtn").addEventListener("click",()=>{ sndOn=!sndOn;
+  document.getElementById("sndBtn").textContent="♪ sound: "+(sndOn?"on":"off"); sndOn?startSound():stopSound(); });
 
-function statusLine(){
-  const h = S.hope;
-  const vibe = S.won ? "outside." :
-    moodyDay ? "the room feels far away today" :
-    h<32 ? "buried somewhere in the blankets" :
-    h<62 ? "sitting up, at least" :
-    h<88 ? "standing by the window" : "so close to the door";
-  const they = S.gender==="girl"?"she's":"he's";
-  stL.textContent = `day ${S.dayNum} · ${S.name} · ${they} ${vibe}`;
-}
+/* ============================================================
+   CHAT
+   ============================================================ */
+const log=document.getElementById("log"), inp=document.getElementById("inp"),
+      send=document.getElementById("send"), chips=document.getElementById("chips"), stL=document.getElementById("stL");
+const MOOD_SPD={flat:[36,10],dry:[26,14],soft:[20,24],open:[16,28],bright:[12,32]};
+function addMsg(text,who,mood){ const d=document.createElement("div"); d.className="msg "+who; log.appendChild(d);
+  if(who==="them"){ const spd=MOOD_SPD[mood||currentMood]||MOOD_SPD.soft; let i=0;
+    (function tick(){ d.textContent=text.slice(0,++i); log.scrollTop=log.scrollHeight;
+      if(i<text.length) setTimeout(tick, spd[0]+Math.random()*spd[1]); })(); sfx("blip");
+  } else d.textContent=text;
+  log.scrollTop=log.scrollHeight; return d; }
+function addSys(t){ const d=document.createElement("div"); d.className="msg sys"; d.textContent=t; log.appendChild(d); log.scrollTop=log.scrollHeight; }
+const sysMsg=addSys;
 
-let waiting = false;
-function busy(b){
-  waiting = b; send.disabled = b; inp.disabled = b;
-  if (b){ window._typing = addMsg("…", "them"); }
-  else if (window._typing){ window._typing.remove(); window._typing = null; }
-}
+const OPENERS={ low:["hey. i'm here.","you don't have to say anything. i'll sit with you.","what did you eat today?","can we open the curtain a tiny bit?"],
+  mid:["tell me one thing you miss.","want to put one song on?","what's the smallest thing we could do right now?","how about water. just water."],
+  high:["the light outside looks nice today.","what would you do first, if we stepped out?","one shoe. that's all i'm asking.","i'm proud of you, you know."] };
+function offerChips(){ chips.innerHTML=""; if(S.won||moodyDay) return; if(Math.random()>0.45) return;
+  const pool=S.hope<40?OPENERS.low:S.hope<75?OPENERS.mid:OPENERS.high; const r=rng((Math.random()*1e9)|0);
+  [...pool].sort(()=>r()-0.5).slice(0,3).forEach(txt=>{ const b=document.createElement("button"); b.className="chip"; b.textContent=txt;
+    b.onclick=()=>{ chips.innerHTML=""; sendMsg(txt); }; chips.appendChild(b); }); }
 
-async function sendMsg(text){
-  text = (text||"").trim();
-  if (!text || waiting || S.won) return;
-  inp.value = "";
-  chips.innerHTML = "";
-  addMsg(text, "me");
-  S.history.push({role:"user", content:text});
-  S.history = S.history.slice(-30);
-  persist();
+const MOODY_LINES=["…","not today. sorry.","mm.","*pulls the blanket up*","i can hear you. i just… can't, today.","…tomorrow. maybe."];
+function moodyReply(){ setTimeout(()=>{ addMsg(MOODY_LINES[(Math.random()*MOODY_LINES.length)|0],"them","flat"); busy(false); },900+Math.random()*1400); }
 
-  if (moodyDay){ moodyReply(); return; }
+function statusLine(){ const h=S.hope;
+  const vibe=S.won?"outside.":moodyDay?"the room feels far away today":
+    h<32?"buried somewhere in the blankets":h<62?"sitting up, at least":h<88?"standing by the window":"so close to the door";
+  const they=S.gender==="girl"?"she's":"he's"; stL.textContent=`day ${S.dayNum} · ${S.name} · ${they} ${vibe}`; }
 
-  busy(true);
-  let reply = null;
-  try {
-    const r = await fetch(BRAIN, { method:"POST", headers:{"content-type":"application/json"},
-      body: JSON.stringify({ state:{name:S.name, gender:S.gender, hope:S.hope, day:S.dayNum}, history:S.history }) });
-    const j = await r.json();
-    if (j && j.text) reply = j.text;
-  } catch(e){}
+let waiting=false;
+function busy(b){ waiting=b; send.disabled=b; inp.disabled=b;
+  if(b){ window._typing=addMsg("…","them","flat"); } else if(window._typing){ window._typing.remove(); window._typing=null; } }
+
+async function sendMsg(text){ text=(text||"").trim(); if(!text||waiting||S.won) return;
+  inp.value=""; chips.innerHTML=""; addMsg(text,"me"); S.history.push({role:"user",content:text}); S.history=S.history.slice(-30); persist();
+  if(moodyDay){ moodyReply(); return; }
+  busy(true); let reply=null;
+  try{ const r=await fetch(BRAIN,{method:"POST",headers:{"content-type":"application/json"},
+    body:JSON.stringify({ state:{name:S.name,gender:S.gender,hope:S.hope,day:S.dayNum,hour:new Date().getHours(),seed:S.seed}, history:S.history }) });
+    const j=await r.json(); if(j&&j.text) reply=j.text; }catch(e){}
   busy(false);
+  if(!reply){ addMsg(MOODY_LINES[(Math.random()*MOODY_LINES.length)|0],"them","flat");
+    sysMsg("(they seem too tired to really talk right now — try again in a bit)"); return; }
 
-  if (!reply){ // proxy exhausted or offline → in-fiction fallback
-    addMsg(MOODY_LINES[(Math.random()*MOODY_LINES.length)|0], "them");
-    sysMsg("(they seem too tired to really talk right now — try again in a bit)");
-    return;
-  }
+  const {reply:clean, hope, acts, mood}=parseTag(reply);
+  currentMood=mood||currentMood;
+  S.history.push({role:"assistant",content:clean});
+  addMsg(clean,"them",currentMood);
+  // fire actions (LLM-picked, else keyword fallback)
+  const toPlay=acts.length?acts:fallbackActs(clean);
+  toPlay.slice(0,2).forEach((id,k)=>setTimeout(()=>playAct(id),400+k*500));
 
-  // parse & strip the hidden hope tag
-  let delta = 0;
-  const m = reply.match(/@@hope:(-?1|0)@@/);
-  if (m){ delta = parseInt(m[1],10); reply = reply.replace(/\s*@@hope:(-?1|0)@@\s*/g,"").trim(); }
-  S.history.push({role:"assistant", content:reply});
-  addMsg(reply, "them");
-
-  S.hope = Math.max(5, S.hope + (delta>0 ? 4 : delta<0 ? -2 : 1));
-  if (S.hope >= 100 && !S.won){ winGame(); }
+  const prev=S.hope; S.hope=Math.max(5,S.hope+(hope>0?4:hope<0?-2:1));
+  if(hope>0) playAct("hope_bloom");
+  if(S.hope>=100 && !S.won) winGame();
   persist(); statusLine(); offerChips();
 }
+function winGame(){ S.won=true; persist(); winPhase=0; fx.letterbox=0.01;
+  const they=S.gender==="girl"?"she":"he";
+  setTimeout(()=>sysMsg(`day ${S.dayNum}. ${they} put on shoes.`),1500);
+  setTimeout(()=>sysMsg(`${they} opened the door. the light came in all at once.`),5000);
+  setTimeout(()=>{ sysMsg(`${S.name} stepped outside. you never lost — you just needed ${S.dayNum} day${S.dayNum>1?"s":""}.`);
+    const b=document.createElement("button"); b.className="chip"; b.textContent="⟳ begin again, with someone new";
+    b.onclick=()=>{ localStorage.removeItem(SAVE_KEY); location.reload(); }; chips.appendChild(b); },9000); }
+send.addEventListener("click",()=>sendMsg(inp.value));
+inp.addEventListener("keydown",e=>{ if(e.key==="Enter") sendMsg(inp.value); });
 
-function winGame(){
-  S.won = true; persist();
-  winPhase = 0;
-  const they = S.gender==="girl"?"she":"he";
-  setTimeout(()=>{ sysMsg(`day ${S.dayNum}. ${they} put on shoes.`); }, 1500);
-  setTimeout(()=>{ sysMsg(`${they} opened the door. the light came in all at once.`); }, 5000);
-  setTimeout(()=>{
-    sysMsg(`${S.name} stepped outside. you never lost — you just needed ${S.dayNum} day${S.dayNum>1?"s":""}.`);
-    const b = document.createElement("button");
-    b.className="chip"; b.textContent="⟳ begin again, with someone new";
-    b.onclick = ()=>{ localStorage.removeItem(SAVE_KEY); location.reload(); };
-    chips.appendChild(b);
-  }, 9000);
-}
+/* ============================================================
+   #gallery QA MODE — cycles every catalog action, 2s apart, id top-left
+   ============================================================ */
+let gallery=false, galIdx=0, galT=0;
+function galleryTick(){ galT+=dt; if(galT>=2){ galT=0; galIdx=(galIdx+1)%CATALOG.length; running=[]; blockingId=null;
+    const r=restPose(); C.pose=r.pose; C.x=r.x; C.y=r.y; playAct(CATALOG[galIdx]); } }
+function drawGalleryLabel(){ g.fillStyle="rgba(0,0,0,.6)"; g.fillRect(0,0,180,16);
+  g.fillStyle="#ffd98a"; g.font="10px monospace"; g.fillText(`${galIdx+1}/${CATALOG.length}  ${CATALOG[galIdx]}`,4,11); }
 
-send.addEventListener("click", ()=>sendMsg(inp.value));
-inp.addEventListener("keydown", e=>{ if (e.key==="Enter") sendMsg(inp.value); });
-
-/* ---------- day roll & load ---------- */
-function load(){
-  document.getElementById("intro").classList.add("hidden");
-  const t = today();
-  if (S.lastDay !== t){
-    S.dayNum += 1; S.lastDay = t;
-    S.history.push({role:"user", content:`(a new day started — day ${S.dayNum}. greet me in whatever mood you woke up in.)`});
-    persist();
-  }
-  // moody day: seeded by date+seed, ~18% of days. day 1 is never moody.
-  moodyDay = !S.won && S.dayNum > 1 && rng(hashStr(t) ^ S.seed)() < 0.18;
-  hope01 = Math.min(S.hope,100)/100;
+/* ============================================================
+   DAY ROLL + LOAD
+   ============================================================ */
+function load(){ document.getElementById("intro").classList.add("hidden");
+  if(!S.settings) S.settings={substances:true};
+  const t=today();
+  if(S.lastDay!==t){ S.dayNum+=1; S.lastDay=t;
+    S.history.push({role:"user",content:`(a new day started — day ${S.dayNum}. greet me in whatever mood you woke up in.)`}); persist(); }
+  moodyDay=!S.won && S.dayNum>1 && rng(hashStr(t)^S.seed)()<0.18;
+  hope01=Math.min(S.hope,100)/100;
+  const r=restPose(); C.gender=S.gender; C.pose=r.pose; C.x=r.x; C.y=r.y;
   statusLine();
-
-  // replay recent history into the log
-  S.history.filter(m=>!m.content.startsWith("(")).slice(-12).forEach(m=>{
-    const d = document.createElement("div");
-    d.className = "msg " + (m.role==="user"?"me":"them");
-    d.textContent = m.content; log.appendChild(d);
-  });
-  log.scrollTop = log.scrollHeight;
-
-  if (S.won){ winPhase = 99; sysMsg(`${S.name} is outside now. the room keeps the light on for you.`);
+  S.history.filter(m=>!m.content.startsWith("(")).slice(-12).forEach(m=>{ const d=document.createElement("div");
+    d.className="msg "+(m.role==="user"?"me":"them"); d.textContent=m.content; log.appendChild(d); });
+  log.scrollTop=log.scrollHeight;
+  if(S.won){ winPhase=99; sysMsg(`${S.name} is outside now. the room keeps the light on for you.`);
     const b=document.createElement("button"); b.className="chip"; b.textContent="⟳ begin again";
     b.onclick=()=>{ localStorage.removeItem(SAVE_KEY); location.reload(); }; chips.appendChild(b); return; }
-
-  if (moodyDay) sysMsg(`${S.gender==="girl"?"she":"he"} won't really talk today. some days are like that. come back tomorrow — it still counts.`);
-  else if (!S.history.length){
-    sysMsg("you are the voice inside. say hello, gently.");
-    offerChips();
-  } else offerChips();
+  if(moodyDay) sysMsg(`${S.gender==="girl"?"she":"he"} won't really talk today. some days are like that. come back tomorrow — it still counts.`);
+  else if(!S.history.length){ sysMsg("you are the voice inside. say hello, gently."); offerChips(); }
+  else offerChips();
 }
 
 /* ---------- intro ---------- */
-let pickG = null;
-document.querySelectorAll(".pick").forEach(p=>{
-  // draw the mini avatar
-  const c = p.querySelector("canvas").getContext("2d");
-  const girl = p.dataset.g==="girl";
-  const hair = girl ? "#8a4a5e" : "#3b2f33", shirt = girl ? "#d9a441" : "#4a8a8a";
-  c.fillStyle="#f5cda6"; c.fillRect(4,3,8,7);
-  c.fillStyle=hair; c.fillRect(3,1,10,4);
-  if (girl){ c.fillRect(2,3,2,10); c.fillRect(12,3,2,10); } else c.fillRect(3,3,1,3);
-  c.fillStyle="#241a2e"; c.fillRect(6,7,1,1); c.fillRect(9,7,1,1);
-  c.fillStyle=shirt; c.fillRect(4,10,8,8);
+let pickG=null;
+document.querySelectorAll(".pick").forEach(p=>{ const c=p.querySelector("canvas").getContext("2d");
+  const girl=p.dataset.g==="girl"; const hair=girl?"#8a4a5e":"#3b2f37", shirt=girl?"#d9a441":"#4f8a86";
+  c.fillStyle="#e6b78e"; c.fillRect(4,3,8,7); c.fillStyle=hair; c.fillRect(3,1,10,4);
+  if(girl){ c.fillRect(2,3,2,10); c.fillRect(12,3,2,10); } else c.fillRect(3,3,1,3);
+  c.fillStyle="#241a2e"; c.fillRect(6,7,1,1); c.fillRect(9,7,1,1); c.fillStyle=shirt; c.fillRect(4,10,8,8);
   c.fillStyle="#3d3a5c"; c.fillRect(4,18,3,5); c.fillRect(9,18,3,5);
-  p.addEventListener("click", ()=>{
-    document.querySelectorAll(".pick").forEach(q=>q.classList.remove("sel"));
-    p.classList.add("sel"); pickG = p.dataset.g;
-  });
-});
-document.getElementById("begin").addEventListener("click", ()=>{
-  const name = document.getElementById("nameInp").value.trim() || (pickG==="girl"?"Mio":"Kai");
-  if (!pickG){ document.getElementById("who").style.outline="1px solid #ffb75e"; return; }
-  S = newSave(name, pickG); persist(); load();
-});
+  p.addEventListener("click",()=>{ document.querySelectorAll(".pick").forEach(q=>q.classList.remove("sel")); p.classList.add("sel"); pickG=p.dataset.g; }); });
+document.getElementById("begin").addEventListener("click",()=>{ const name=document.getElementById("nameInp").value.trim()||(pickG==="girl"?"Mio":"Kai");
+  if(!pickG){ document.getElementById("who").style.outline="1px solid #ffb75e"; return; } S=newSave(name,pickG); persist(); load(); });
 
-/* dev hook: #test:girl:70 boots straight into the room at a given hope */
-if (location.hash.startsWith("#test:")){
-  const parts = location.hash.split(":");
-  S = newSave(parts[1]==="girl"?"Mio":"Kai", parts[1]==="girl"?"girl":"boy");
-  S.hope = Math.min(100, parseInt(parts[2]||"20",10));
-}
+/* ---------- dev hooks ----------
+   #test:girl:70            boot into room at hope 70
+   #test:girl:70:moody      force moody day
+   #gallery                 cycle all 130 actions for screenshot QA
+   #act:cat_zoomies+shake_small   force-play actions on load
+*/
+(function devHooks(){ const hash=location.hash;
+  if(hash.startsWith("#test:")){ const p=hash.slice(1).split(":");
+    S=newSave(p[1]==="girl"?"Mio":"Kai", p[1]==="girl"?"girl":"boy"); S.hope=Math.min(100,parseInt(p[2]||"20",10)); S.dayNum=1;
+    if(p[3]==="moody") window._forceMoody=true; }
+  if(hash.startsWith("#gallery")){ if(!S) S=newSave("Mio","girl"); S.hope=70; gallery=true; }
+  if(hash.startsWith("#act:")){ if(!S) S=newSave("Kai","boy"); window._forceActs=hash.slice(5).split("+"); }
+  if(hash.startsWith("#win")){ if(!S) S=newSave("Mio","girl"); S.hope=100; window._forceWin=true; }
+})();
+if(S && S.name){ load(); if(window._forceMoody) moodyDay=true;
+  if(window._forceActs) window._forceActs.forEach((id,k)=>setTimeout(()=>playAct(id),300+k*400));
+  if(window._forceWin) winGame(); }
 
-if (S && S.name) load();
+/* #qa — exercise every action's world/start/update/draw/end in a sandbox; report failures in <title> */
+if(location.hash==="#qa"){ if(!S){ S=newSave("Mio","girl"); load(); }
+  const ids=CATALOG.concat(["reach_out"]); const failed=[];
+  for(const id of ids){ const def=ACT[id]; if(!def){ failed.push(id+"(missing)"); continue; }
+    const inst={id,def,age:0,t:0.5,dur:def.dur||2,mem:{},started:true};
+    try{ if(def.world) def.world(); if(def.start) def.start(inst);
+      for(let f=0;f<3;f++){ inst.age+=0.4; inst.t=Math.min(1,inst.age/inst.dur);
+        if(def.update) def.update(inst); const ctx=(def.layer==="fx"?FX.x:AN.x); if(def.draw) def.draw(ctx,inst); }
+      if(def.end) def.end(inst);
+    }catch(e){ failed.push(id+": "+(e&&e.message)); } }
+  document.title = failed.length ? ("QA_FAIL["+failed.length+"] "+failed.join(" | ")) : ("QA_PASS "+ids.length+" actions");
+  console.log(document.title); }
 </script>
 
 <script>
@@ -636,9 +1254,7 @@ if (S && S.name) load();
   var EP = "https://site-analytics.vaibhavpro9210.workers.dev/ping";
   var sid = sessionStorage.getItem("va_sid");
   if (!sid) { sid = Math.random().toString(36).slice(2) + Date.now().toString(36); sessionStorage.setItem("va_sid", sid); }
-  function send(kind){
-    try { navigator.sendBeacon(EP, new Blob([JSON.stringify({sid:sid, page:location.pathname, kind:kind})], {type:"text/plain"})); } catch(e){}
-  }
+  function send(kind){ try { navigator.sendBeacon(EP, new Blob([JSON.stringify({sid:sid, page:location.pathname, kind:kind})], {type:"text/plain"})); } catch(e){} }
   send("load");
   setInterval(function(){ if (document.visibilityState === "visible") send("beat"); }, 60000);
 })();
