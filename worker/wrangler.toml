@@ -1,0 +1,12 @@
+name = "lemon-brain"
+main = "worker.js"
+compatibility_date = "2026-07-01"
+
+[[kv_namespaces]]
+binding = "LIMITS"
+id = "c5cfd8bf5103486eb8b1c34747affa7a"
+
+# Secrets (set via `npx wrangler secret put <NAME>`, never in this file):
+#   GROQ_API_KEY   — console.groq.com (primary, llama-3.3-70b → llama-3.1-8b)
+#   GEMINI_API_KEY — aistudio.google.com (fallback, gemini-3.5-flash)
+#   IP_SALT        — random string mixed into IP hashes for rate-limit keys
