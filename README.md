@@ -11,15 +11,22 @@ at all; come back tomorrow, it still counts.
 
 ## How it works
 
-- `index.html` — the whole game (v2). Single file, zero dependencies. Pixel-art
-  room on a 480×270 canvas with three cached layers (background / animation /
-  screen-FX), dithered texture, and a palette that lerps from dusk-blue to golden
-  hour as hope rises — color is never withheld, only re-warmed. A city window
-  (skyline, flickering windows, moon, a crossing train, shooting stars, rain),
-  cozy clutter, an orange cat, and a procedural sprite with waypoint locomotion.
-  A **141-action registry** driven by the model's reply tag plus an autonomous
-  idle pool keeps the room alive. Procedural lofi (Am7–Fmaj7–Cmaj7–G6 pad, tape
-  wobble, rain, crackle, synth SFX) via WebAudio. State in localStorage (`lemon.v2`).
+- `index.html` — the whole game (v3, cyberpunk). Single file, zero dependencies.
+  Detailed procedural pixel art on a 480×270 canvas with three cached layers
+  (background / animation / screen-FX): 4-step hue-shifted colour ramps, additive
+  neon glow, dithering, and animated depth. **Hope drives the time of day** — a
+  rain-soaked magenta/cyan neon night at low hope warms all the way to dawn over
+  the megacity at high hope. Colour is never withheld, only re-warmed. The window
+  is a full wall onto an animated city (parallax skyline, blinking windows, neon
+  signs, a scrolling holo-billboard, flying cars, rain, a maglev light-line), the
+  interior a lofi battlestation (dual monitors, RGB keyboard, LED bed strip, synth,
+  ramen, server shelf). A ~48px parametric character rig (ramp-shaded, gendered
+  hair, expressions, held items) with waypoint locomotion, plus a neon-lit cat.
+  A **159-action registry** — including cyberpunk beats like `music_immerse`
+  (headphones + floating equaliser), `synth_jam`, `vr_session`, `holo_pet`,
+  `cyberdeck_type`, `dance_break` — driven by the model's reply tag plus an
+  autonomous idle pool. Procedural lofi (Am9–Fmaj9–Dm9–Em7 pad, tape wobble, rain,
+  crackle, synth SFX) via WebAudio. State in localStorage (`lemon.v2`).
 - `worker/` — `lemon-brain`, a Cloudflare Worker that holds the LLM keys as
   secrets and rate-limits per visitor (salted IP hashes, no raw IPs). Cascades
   across free tiers: Groq llama-3.3-70b → llama-3.1-8b → Gemini 3.5 flash. When
@@ -33,8 +40,10 @@ at all; come back tomorrow, it still counts.
 
 ## Dev / QA
 
-- `#test:girl:70[:moody]` boots into the room at a hope value; `#gallery` cycles all
-  141 actions with their id labelled; `#act:id+id2` force-plays actions; `#win` runs
+- `#test:girl:70[:moody]` boots into the room at a hope value (also sets the neon→dawn
+  look, since hope drives time-of-day); `#gallery` cycles all actions with their id
+  labelled; `#act:id+id2` force-plays actions; `#shot:id:hope:gender` teleports to an
+  action's spot and freezes it mid-animation for deterministic screenshots; `#win` runs
   the win cutscene; `#qa` sandbox-runs every action and puts the verdict in the page
   `<title>` (read with headless Chrome `--dump-dom`).
 - Worker: `cd worker && npx wrangler deploy`. Secrets: `GROQ_API_KEY`,
