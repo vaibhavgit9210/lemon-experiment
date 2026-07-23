@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>lemon — a small room</title>
 <style>
   :root{
@@ -18,29 +18,54 @@
   }
   body::after{ content:""; position:fixed; inset:0; pointer-events:none;
     background:radial-gradient(ellipse at 50% 40%, transparent 58%, rgba(5,3,12,.5) 100%); }
-  #stage{ width:100%; max-width:960px; position:relative; flex:0 0 auto; aspect-ratio:16/9; background:#000; }
+  /* full-bleed room: the canvas covers the whole viewport (bleed compositing in JS) */
+  #stage{ position:fixed; inset:0; background:#000; overflow:hidden; }
   canvas#scene{ width:100%; height:100%; display:block; image-rendering:pixelated; image-rendering:crisp-edges; }
-  #status{ width:100%; max-width:960px; padding:6px 14px; font-size:11px; color:var(--dim);
-    display:flex; justify-content:space-between; letter-spacing:.08em; }
-  #status .r{cursor:pointer; user-select:none;} #status .r:hover{color:var(--ink);}
-  #chat{ width:100%; max-width:960px; flex:1 1 auto; min-height:0; display:flex; flex-direction:column; padding:0 10px 10px; }
-  #log{ flex:1 1 auto; overflow-y:auto; display:flex; flex-direction:column; gap:8px;
+  /* status as a quiet overlay on the art */
+  #status{ position:fixed; top:0; left:0; right:min(340px,36vw); z-index:4; display:flex; justify-content:space-between;
+    padding:8px 14px; font-size:11px; color:var(--dim); letter-spacing:.08em; pointer-events:none;
+    text-shadow:0 1px 3px rgba(0,0,0,.85); }   /* right stops at the rail so sndBtn stays over the room */
+  #status .r{ pointer-events:auto; cursor:pointer; user-select:none; } #status .r:hover{color:var(--ink);}
+  /* chat: floating side rail on desktop (mobile sheet in the media query below) */
+  #chat{ position:fixed; z-index:5; top:0; right:0; bottom:0; width:min(340px,36vw);
+    display:flex; flex-direction:column; padding:10px 10px 10px;
+    background:rgba(16,11,32,.72); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+    border-left:1px solid rgba(255,183,94,.12); }
+  #dragHandle{ display:none; }
+  #log{ flex:1 1 auto; min-height:0; overflow-y:auto; display:flex; flex-direction:column; gap:8px;
     padding:10px 4px; scrollbar-width:thin; scrollbar-color:var(--panel2) transparent; }
-  .msg{max-width:78%; padding:8px 12px; border-radius:4px; font-size:13px; line-height:1.55; white-space:pre-wrap;}
+  .msg{max-width:82%; padding:8px 12px; border-radius:4px; font-size:13px; line-height:1.55; white-space:pre-wrap;}
   .them{align-self:flex-start; background:var(--them); border-left:3px solid var(--accent2); color:var(--ink);}
   .me{align-self:flex-end; background:var(--me); border-right:3px solid var(--accent); color:#e8e2f7;}
-  .sys{align-self:center; color:var(--dim); font-size:11px; font-style:italic; padding:2px 0;}
+  .sys{align-self:center; color:var(--dim); font-size:11px; font-style:italic; padding:2px 0; text-align:center;}
   #chips{display:flex; gap:8px; flex-wrap:wrap; padding:4px 4px 8px;}
   .chip{ background:transparent; border:1px solid var(--accent2); color:var(--ink);
     font:inherit; font-size:11.5px; padding:5px 10px; border-radius:3px; cursor:pointer; }
   .chip:hover{background:var(--panel2);}
   #bar{display:flex; gap:8px;}
-  #inp{ flex:1; background:var(--panel); border:1px solid #2c2350; color:var(--ink);
+  #inp{ flex:1; min-width:0; background:var(--panel); border:1px solid #2c2350; color:var(--ink);
     font:inherit; font-size:13px; padding:11px 12px; border-radius:4px; outline:none; }
   #inp:focus{border-color:var(--accent2);}
   #send{ background:var(--accent2); border:none; color:#0d0a1e; font:inherit; font-weight:700;
     font-size:13px; padding:0 20px; border-radius:4px; cursor:pointer; }
   #send:disabled{opacity:.35; cursor:default;}
+  /* persistent, quiet help affordance (§5) */
+  #helpLink{ display:block; margin-top:8px; padding:2px; text-align:center; font-size:10px;
+    color:#6c5fc7; text-decoration:none; opacity:.72; letter-spacing:.03em; }
+  #helpLink:hover{ opacity:1; text-decoration:underline; }
+  /* mobile: chat becomes a short bottom sheet in the thumb zone */
+  @media (max-width:859px){
+    #chat{ top:auto; left:0; right:0; bottom:0; width:auto; height:40dvh;
+      background:rgba(16,11,32,.94); backdrop-filter:none; -webkit-backdrop-filter:none;
+      border-left:none; border-top:1px solid rgba(255,183,94,.14); border-radius:14px 14px 0 0;
+      padding:0 12px 10px; }
+    #chat.expanded{ height:72dvh; }
+    #dragHandle{ display:block; height:16px; flex:0 0 auto; cursor:pointer; position:relative; }
+    #dragHandle::before{ content:""; position:absolute; left:50%; top:6px; transform:translateX(-50%);
+      width:36px; height:4px; border-radius:2px; background:var(--dim); opacity:.5; }
+    #inp{ font-size:16px; }   /* ≥16px so iOS doesn't zoom on focus */
+    #status{ right:0; }       /* sheet is at the bottom on mobile — top strip spans full width */
+  }
 
   #intro{ position:fixed; inset:0; z-index:10; display:flex; flex-direction:column;
     align-items:center; justify-content:center; gap:26px; text-align:center;
@@ -88,14 +113,16 @@
   <span id="stL">day 1</span>
   <span class="r" id="sndBtn">♪ sound: off</span>
 </div>
-<div id="chat">
+<aside id="chat">
+  <div id="dragHandle"></div>
   <div id="log"></div>
   <div id="chips"></div>
   <div id="bar">
     <input id="inp" maxlength="300" placeholder="say something…" autocomplete="off">
     <button id="send">→</button>
   </div>
-</div>
+  <a id="helpLink" href="tel:+919152987821">not a game? talk to someone →</a>
+</aside>
 
 <script>
 "use strict";
@@ -146,6 +173,25 @@ function mkLayer(){ const c=document.createElement("canvas"); c.width=W; c.heigh
 const BG=mkLayer(), AN=mkLayer(), FX=mkLayer();
 g.imageSmoothingEnabled=false;
 
+/* ---------- full-bleed fit: scene stays 480x270, display canvas covers the viewport ----------
+   the 480x270 scene is centered in the region NOT covered by chat; margins are filled by
+   stretching the scene's own 1px edge strips (bleed composite in frame()). NOT object-fit:cover. */
+let OX=0, OY=0, sheetExpanded=false;
+function isDesk(){ return matchMedia("(min-width:860px)").matches; }
+function chatRailPx(){ return Math.min(340, innerWidth*0.36); }
+function sheetPx(){ return innerHeight*(sheetExpanded?0.72:0.40); }
+function fitCanvas(){
+  const vw=innerWidth, vh=innerHeight, desk=isDesk();
+  const availW = desk ? vw - chatRailPx() : vw;       // region not under the rail
+  const availH = desk ? vh : vh - sheetPx();          // region not under the sheet
+  const s = Math.min(availW/W, availH/H);             // scene scale (css px per scene px)
+  cv.style.width=vw+"px"; cv.style.height=vh+"px";
+  cv.width=Math.max(W,Math.round(vw/s)); cv.height=Math.max(H,Math.round(vh/s)); // backing store, scene px
+  OX=Math.max(0,Math.round((availW/s-W)/2)); OY=Math.max(0,Math.round((availH/s-H)/2));
+  g.imageSmoothingEnabled=false;
+}
+addEventListener("resize", fitCanvas); fitCanvas();
+
 let T=0, dt=0, lastTs=0;
 let hope01=0.2;                 // eased display value of hope/100
 let moodyDay=false;
@@ -165,9 +211,22 @@ function pat(a,b){ const k=a+"|"+b; if(_pats[k]) return _pats[k];
 function dither(ctx,x,y,w,h,a,b){ ctx.save(); ctx.fillStyle=pat(a,b);
   ctx.translate(x|0,y|0); ctx.fillRect(0,0,w,h); ctx.restore(); }
 
+/* ---------- one deterministic 64x64 grain tile (built once, seed-stable — no per-frame shimmer) ---------- */
+let noiseTile=null;
+function buildNoise(){ const n=document.createElement("canvas"); n.width=64; n.height=64; const c=n.getContext("2d");
+  const r=rng((S?S.seed:7)^0x2E); const img=c.createImageData(64,64), d=img.data;
+  for(let i=0;i<d.length;i+=4){ const v=(r()*255)|0; d[i]=d[i+1]=d[i+2]=v; d[i+3]=255; }
+  c.putImageData(img,0,0); noiseTile=g.createPattern(n,"repeat"); }
+
 /* ---------- palette: [low(dusk-cozy), high(golden)] lerped by hope ---------- */
 function hx(c){ return [parseInt(c.slice(1,3),16),parseInt(c.slice(3,5),16),parseInt(c.slice(5,7),16)]; }
 function mix(a,b,t){ const A=hx(a),B=hx(b); return `rgb(${A.map((v,i)=>Math.round(v+(B[i]-v)*t)).join(",")})`; }
+/* rgbOf accepts hex OR an "rgb(r,g,b)" string (the lerped P colors) so shading helpers compose on P */
+function rgbOf(c){ if(c[0]==="#") return hx(c); const m=c.match(/(\d+)\D+(\d+)\D+(\d+)/); return m?[+m[1],+m[2],+m[3]]:[0,0,0]; }
+function mix2(a,b,t){ const A=rgbOf(a),B=rgbOf(b); return `rgb(${A.map((v,i)=>Math.round(v+(B[i]-v)*t)).join(",")})`; }
+/* hue-shift shading: warm toward the lamp/window light, cool toward dusk shadow — never just darken */
+const warmC=(c,k)=>mix2(c,"#ffb75e",k);   // toward the lamp color
+const coolC=(c,k)=>mix2(c,"#2e3f8a",k);   // toward dusk shadow
 const PAL = {
   wall:   ["#4c3d58","#8a6470"],  wallHi:["#5a4a66","#9a7280"],  wallLo:["#3c3048","#6e4e58"],
   floor:  ["#6a5058","#a67a54"],  floorLo:["#54404a","#8a6444"],
@@ -236,15 +295,21 @@ function drawBG(){
   const t = winPhase>=0?1:hope01;
   for (const k in PAL) P[k]=mix(PAL[k][0],PAL[k][1],t);
 
-  // walls (dithered vertical bands = texture)
+  // walls (dithered vertical bands = texture) + hue-shifted vertical falloff (warm top, cool base)
   px(x,0,0,W,FLOOR,P.wall);
   dither(x,0,0,W,10,P.wallLo,P.wall);
   dither(x,0,10,W,26,P.wallHi,P.wall);
+  x.globalAlpha=.5; px(x,0,0,W,8,warmC(P.wall,.14)); x.globalAlpha=1;      // ceiling catches light
+  px(x,0,FLOOR-9,W,4,coolC(P.wallLo,.18));                                  // cool shadow along the skirting
   px(x,0,FLOOR-5,W,5,P.wallLo);
   // floor + boards
   px(x,0,FLOOR,W,H-FLOOR,P.floor);
   for(let i=0;i<10;i++) px(x,0,FLOOR+i*8,W,1,P.floorLo);
   dither(x,0,FLOOR,W,6,P.floorLo,P.floor);
+  px(x,0,FLOOR,W,3,warmC(P.floor,.10));                                     // near edge of floor warms toward the room
+  // deterministic grain over wall + floor — kills the flat-fill look for ~zero cost
+  if(!noiseTile) buildNoise();
+  if(noiseTile){ x.save(); x.globalAlpha=.04; x.fillStyle=noiseTile; x.fillRect(0,0,W,FLOOR); x.fillRect(0,FLOOR,W,H-FLOOR); x.restore(); }
   // rug (teal + rose border)
   px(x,R.rug.x,R.rug.y,R.rug.w,R.rug.h,P.rugEdge);
   px(x,R.rug.x+4,R.rug.y+4,R.rug.w-8,R.rug.h-8,P.rug);
@@ -295,6 +360,8 @@ function drawBG(){
   px(x,R.desk.x+3,R.desk.y+4,3,44,P.deskLeg); px(x,R.desk.x+R.desk.w-6,R.desk.y+4,3,44,P.deskLeg);
   px(x,R.desk.x+8,R.desk.y-12,26,12,"#2a2438"); // laptop
   px(x,R.desk.x+10,R.desk.y-10,22,8, isNight()?"#7ac0e8":"#bfe4f2");
+  { x.save(); x.globalCompositeOperation="lighter"; x.globalAlpha=.16;   // cool screen bloom
+    dither(x,R.desk.x+4,R.desk.y-16,34,18,"rgba(150,205,240,1)","rgba(150,205,240,0)"); x.restore(); x.globalAlpha=1; }
   px(x,R.desk.x+40,R.desk.y+2,40,2,"#5a3f6a"); // RGB keyboard strip (hue drawn in anim)
   px(x,R.desk.x+6,R.desk.y-4,3,4,"#c88a4e"); // mug
   // CRT TV on low stand
@@ -337,7 +404,40 @@ function drawBG(){
     dither(x,cx-30,FLOOR,60,20,"rgba(255,183,94,1)","rgba(255,183,94,0)");
     dither(x,cx-18,FLOOR+2,36,14,"rgba(255,205,130,1)","rgba(255,205,130,0)");
     x.globalAlpha=1;
+    // additive bloom around the shade — concentric low-alpha warm halo
+    x.save(); x.globalCompositeOperation="lighter";
+    for(let b=0;b<3;b++){ x.globalAlpha=(0.10-b*0.025)*(0.7+0.5*t);
+      dither(x,cx-8-b*6,102-b*4,16+b*12,20+b*8,"rgba(255,196,120,1)","rgba(255,196,120,0)"); }
+    x.restore(); x.globalAlpha=1;
   }
+
+  // ---- extra clutter (static): mug ring, laptop cable, shelf plant, rug fringe, poster tape ----
+  x.globalAlpha=.3; px(x,R.desk.x+15,R.desk.y-1,6,1,"#3a2a20"); px(x,R.desk.x+15,R.desk.y-1,1,1,"#5a4030"); x.globalAlpha=1; // coffee ring
+  px(x,R.desk.x+30,R.desk.y,1,4,"#191521"); px(x,R.desk.x+R.desk.w-6,R.desk.y+4,1,42,"#191521"); // laptop cable down the leg
+  px(x,R.shelf.x+2,R.shelf.y-7,4,7,P.pot); px(x,R.shelf.x+1,R.shelf.y-11,6,5,P.leaf); // small shelf plant
+  for(let i=0;i<R.rug.w;i+=4){ px(x,R.rug.x+i,R.rug.y-1,2,1,P.rugEdge); px(x,R.rug.x+i,R.rug.y+R.rug.h,2,1,P.rugEdge); } // rug fringe ticks
+  x.globalAlpha=.5; px(x,159,59,3,2,"#d8d0c0"); px(x,180,59,3,2,"#d8d0c0"); px(x,191,63,3,2,"#d8d0c0"); px(x,209,63,3,2,"#d8d0c0"); x.globalAlpha=1; // poster tape corners
+  // ---- ambient occlusion: 1px contact seams where things meet the floor/wall (grounds them) ----
+  const AO="rgba(20,16,38,0.30)";
+  px(x,R.bed.x+2,R.bed.y+R.bed.h,R.bed.w,2,AO);            // under bed front
+  px(x,R.bed.x,R.bed.y-14,7,1,AO);                          // bed headboard vs wall
+  px(x,R.crate.x,R.crate.y+R.crate.h,R.crate.w,2,AO);      // under crate
+  px(x,R.desk.x+3,FLOOR-1,R.desk.w-6,2,AO);                // under desk legs
+  px(x,R.tv.x-2,R.tv.y+R.tv.h+4,R.tv.w+4,2,AO);            // under tv stand
+  px(x,R.door.x,R.door.y+R.door.h,R.door.w,2,AO);          // under door
+  px(x,R.lamp.x-2,195,10,2,AO);                            // lamp base
+  px(x,R.plant.x,R.plant.y+14,14,2,AO);                    // plant pot
+  px(x,R.shelf.x,R.shelf.y+4,R.shelf.w,1,AO);              // under shelf
+  px(x,R.rug.x-1,R.rug.y+R.rug.h,R.rug.w+2,1,AO);          // rug edge on floor
+  px(x,96,240,16,1,AO); px(x,118,241,14,1,AO);             // under book stacks
+  px(x,R.window.x-3,R.window.y+R.window.h+3,R.window.w+6,1,AO); // under windowsill
+  // ---- rim light: warm on lamp/window-facing edges, cool on the window-facing door edge ----
+  const rim="rgba(255,217,138,0.42)", crim="rgba(154,180,232,0.34)";
+  px(x,R.bed.x+2,R.bed.y,R.bed.w,1,rim);                   // bed top catches light
+  px(x,R.desk.x,R.desk.y-1,R.desk.w,1,rim);                // desk top edge
+  px(x,R.crate.x,R.crate.y,R.crate.w,1,rim);               // crate top
+  px(x,R.plant.x,R.plant.y,1,14,crim);                     // plant pot window-side edge
+  px(x,R.door.x,R.door.y,1,R.door.h,crim);                 // door left edge (window side)
 
   // cozy tint: dusk-blue at low hope -> golden at high. NEVER darkens (adds color).
   x.globalAlpha = 0.07*(1-t); px(x,0,0,W,H,"#4a6ab5");   // dusk blue, fades as hope rises
@@ -361,6 +461,8 @@ function drawWindowStatic(x){
   x.fillStyle="rgba(12,10,26,.8)";
   for(let bx=wr.x; bx<wr.x+wr.w; ){ const bw=8+((r()*12)|0), bh=24+((r()*34)|0);
     x.fillRect(bx, wr.y+wr.h-bh, bw, bh); bx+=bw+2; }
+  // faint warm reflection of the room lamp on the lower-left pane
+  if(WORLD.lampOn){ x.globalAlpha=.10; px(x,wr.x+8,wr.y+wr.h-16,3,3,"#ffcf88"); px(x,wr.x+9,wr.y+wr.h-14,2,6,"#ffcf88"); x.globalAlpha=1; }
   // curtains (openness 0..3): drawn as side panels
   const open=WORLD.curtains, cw=Math.round((wr.w/2)*(1-open/3));
   px(x,wr.x,wr.y,cw,wr.h,"#a85f72"); px(x,wr.x+wr.w-cw,wr.y,cw,wr.h,"#a85f72");
@@ -664,8 +766,9 @@ A("privacy_mode",{cat:"imp",dur:6,blocking:true,layer:"fx",world:()=>{WORLD.lamp
   draw:(ctx,i)=>{ ctx.fillStyle=`rgba(6,4,14,${0.7})`; ctx.fillRect(0,0,W,FLOOR);
     if((i.age%0.6)<0.3) px(ctx,R.pillow.x+8,R.bed.y-2,6,6,"rgba(140,210,240,.25)"); }});
 A("long_shower",{cat:"imp",dur:4,draw:(ctx,i)=>{ for(let k=0;k<3;k++){ const sy=R.door.y+((i.age*20+k*14)%40); px(ctx,R.door.x-3,sy,2,2,"rgba(220,230,240,.35)"); } }});
-/* reach_out — the worker's self-harm circuit-breaker. a calm, held, hopeful beat: the room
-   breathes a gentle warm pulse, a soft ♥ at the head. never alarming, never dark. */
+/* reach_out — reserved for the SINCERE/CONCRETE self-harm branch only (casual pushes get a dry
+   headshake instead, worker §SELF-HARM). a calm, held, hopeful beat: the room breathes a gentle
+   warm pulse, a soft ♥ at the head. never alarming, never dark. */
 A("reach_out",{cat:"care",dur:3,layer:"fx",start:()=>{ emote("♥",2.6); fxFlash("255,190,150",0.18); },
   draw:(ctx,i)=>{ const p=0.06+0.05*Math.sin(i.age*1.6); ctx.fillStyle=`rgba(255,200,160,${p})`; ctx.fillRect(0,0,W,H); }});
 
@@ -990,6 +1093,8 @@ function parseTag(reply){
     const am=body.match(/act:([a-z0-9_+]+)/); if(am && am[1]!=="none") acts=am[1].split("+");
     reply=reply.replace(/\s*@@[^@]*@@\s*$/,"").trim();
   }
+  // models occasionally leak bare protocol fragments ("act:reach_out") outside the tag — never show them
+  reply=reply.replace(/^\s*\(?(hope|mood|act)\s*:[^\n]*$/gim,"").trim();
   acts=acts.filter(id=>ACT[id]); // drop unknown
   return {reply, hope, acts, mood};
 }
@@ -1040,10 +1145,17 @@ function frame(ts){
   // ---- composite with shake + zoom ----
   fx.zoom+=(fx.zoomTarget-fx.zoom)*0.06;
   let sx=0,sy=0; if(fx.shakeT>0){ fx.shakeT-=dt; sx=(Math.random()-0.5)*fx.shakeMag*2; sy=(Math.random()-0.5)*fx.shakeMag*2; }
-  g.clearRect(0,0,W,H); g.save();
-  const z=fx.zoom; g.translate(W/2,H/2); g.scale(z,z); g.translate(-W/2+sx,-H/2+sy);
+  g.clearRect(0,0,cv.width,cv.height);
+  // bleed: stretch the scene's 1px edge strips into the four margins (reads as "more room")
+  if(OX>0)              g.drawImage(BG.c,0,0,1,H,    0,OY,OX,H);
+  if(cv.width-OX-W>0)   g.drawImage(BG.c,W-1,0,1,H,  OX+W,OY,cv.width-OX-W,H);
+  if(OY>0)              g.drawImage(BG.c,0,0,W,1,    0,0,cv.width,OY);
+  if(cv.height-OY-H>0)  g.drawImage(BG.c,0,H-1,W,1,  0,OY+H,cv.width,cv.height-OY-H);
+  g.fillStyle="rgba(6,4,14,.38)"; g.fillRect(0,0,cv.width,cv.height); // dim; opaque scene redraws over the center
+  g.save();
+  const z=fx.zoom; g.translate(OX+W/2,OY+H/2); g.scale(z,z); g.translate(-W/2+sx,-H/2+sy);
   g.drawImage(BG.c,0,0); g.drawImage(AN.c,0,0); g.restore();
-  g.drawImage(FX.c,0,0);
+  g.drawImage(FX.c,0,0,W,H, 0,0,cv.width,cv.height); // FX stretches full-bleed (win cutscene/flash fade everything)
   if(gallery) drawGalleryLabel();
 
   requestAnimationFrame(frame);
@@ -1108,10 +1220,15 @@ document.getElementById("sndBtn").addEventListener("click",()=>{ sndOn=!sndOn;
 const log=document.getElementById("log"), inp=document.getElementById("inp"),
       send=document.getElementById("send"), chips=document.getElementById("chips"), stL=document.getElementById("stL");
 const MOOD_SPD={flat:[36,10],dry:[26,14],soft:[20,24],open:[16,28],bright:[12,32]};
+let typing=null;   // {el, full, tid} — the message currently typing out
+function finishTyping(){ if(!typing) return; clearTimeout(typing.tid);
+  typing.el.textContent=typing.full; typing=null; log.scrollTop=log.scrollHeight; }
 function addMsg(text,who,mood){ const d=document.createElement("div"); d.className="msg "+who; log.appendChild(d);
-  if(who==="them"){ const spd=MOOD_SPD[mood||currentMood]||MOOD_SPD.soft; let i=0;
-    (function tick(){ d.textContent=text.slice(0,++i); log.scrollTop=log.scrollHeight;
-      if(i<text.length) setTimeout(tick, spd[0]+Math.random()*spd[1]); })(); sfx("blip");
+  if(who==="them"){ finishTyping(); const spd=MOOD_SPD[mood||currentMood]||MOOD_SPD.soft; let i=0;
+    typing={el:d, full:text, tid:0};
+    (function tick(){ if(!typing||typing.el!==d) return;            // superseded — don't write a detached node
+      d.textContent=text.slice(0,++i); log.scrollTop=log.scrollHeight;
+      if(i<text.length) typing.tid=setTimeout(tick, spd[0]+Math.random()*spd[1]); else typing=null; })(); sfx("blip");
   } else d.textContent=text;
   log.scrollTop=log.scrollHeight; return d; }
 function addSys(t){ const d=document.createElement("div"); d.className="msg sys"; d.textContent=t; log.appendChild(d); log.scrollTop=log.scrollHeight; }
@@ -1128,14 +1245,17 @@ function offerChips(){ chips.innerHTML=""; if(S.won||moodyDay) return; if(Math.r
 const MOODY_LINES=["…","not today. sorry.","mm.","*pulls the blanket up*","i can hear you. i just… can't, today.","…tomorrow. maybe."];
 function moodyReply(){ setTimeout(()=>{ addMsg(MOODY_LINES[(Math.random()*MOODY_LINES.length)|0],"them","flat"); busy(false); },900+Math.random()*1400); }
 
-function statusLine(){ const h=S.hope;
-  const vibe=S.won?"outside.":moodyDay?"the room feels far away today":
-    h<32?"buried somewhere in the blankets":h<62?"sitting up, at least":h<88?"standing by the window":"so close to the door";
-  const they=S.gender==="girl"?"she's":"he's"; stL.textContent=`day ${S.dayNum} · ${S.name} · ${they} ${vibe}`; }
+function statusLine(){ const h=S.hope, they=S.gender==="girl"?"she":"he";
+  const vibe=S.won?`${they}'s outside.`:moodyDay?"the room feels far away today":
+    h<32?`${they}'s buried somewhere in the blankets`:h<62?`${they}'s sitting up, at least`:
+    h<88?`${they}'s standing by the window`:`${they}'s so close to the door`;
+  stL.textContent=`day ${S.dayNum} · ${S.name} · ${vibe}`; }
 
 let waiting=false;
 function busy(b){ waiting=b; send.disabled=b; inp.disabled=b;
-  if(b){ window._typing=addMsg("…","them","flat"); } else if(window._typing){ window._typing.remove(); window._typing=null; } }
+  if(b){ window._typing=addMsg("…","them","flat"); }
+  else if(window._typing){ if(typing&&typing.el===window._typing){ clearTimeout(typing.tid); typing=null; } // don't leave a tick writing into a removed node
+    window._typing.remove(); window._typing=null; } }
 
 async function sendMsg(text){ text=(text||"").trim(); if(!text||waiting||S.won) return;
   inp.value=""; chips.innerHTML=""; addMsg(text,"me"); S.history.push({role:"user",content:text}); S.history=S.history.slice(-30); persist();
@@ -1170,6 +1290,12 @@ function winGame(){ S.won=true; persist(); winPhase=0; fx.letterbox=0.01;
     b.onclick=()=>{ localStorage.removeItem(SAVE_KEY); location.reload(); }; chips.appendChild(b); },9000); }
 send.addEventListener("click",()=>sendMsg(inp.value));
 inp.addEventListener("keydown",e=>{ if(e.key==="Enter") sendMsg(inp.value); });
+// tap the room or the log to finish the typewriter instantly (VN convention)
+document.getElementById("stage").addEventListener("click",finishTyping);
+log.addEventListener("click",finishTyping);
+// mobile: drag-handle toggles the sheet height (re-fit the canvas after)
+(function(){ const h=document.getElementById("dragHandle"), c=document.getElementById("chat");
+  if(h) h.addEventListener("click",()=>{ sheetExpanded=!sheetExpanded; c.classList.toggle("expanded",sheetExpanded); fitCanvas(); }); })();
 
 /* ============================================================
    #gallery QA MODE — cycles every catalog action, 2s apart, id top-left
