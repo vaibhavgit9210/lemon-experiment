@@ -1234,16 +1234,29 @@ function addMsg(text,who,mood){ const d=document.createElement("div"); d.classNa
 function addSys(t){ const d=document.createElement("div"); d.className="msg sys"; d.textContent=t; log.appendChild(d); log.scrollTop=log.scrollHeight; }
 const sysMsg=addSys;
 
-const OPENERS={ low:["hey. i'm here.","you don't have to say anything. i'll sit with you.","what did you eat today?","can we open the curtain a tiny bit?"],
-  mid:["tell me one thing you miss.","want to put one song on?","what's the smallest thing we could do right now?","how about water. just water."],
-  high:["the light outside looks nice today.","what would you do first, if we stepped out?","one shoe. that's all i'm asking.","i'm proud of you, you know."] };
+const OPENERS={ low:["hey. i'm here.","you don't have to say anything. i'll sit with you.","what did you eat today?","can we open the curtain a tiny bit?","what are you watching these days?"],
+  mid:["tell me one thing you miss.","want to put one song on?","what's the smallest thing we could do right now?","how about water. just water.","okay, rank the delivery apps.","best meal you ever had on a trip?"],
+  high:["the light outside looks nice today.","what would you do first, if we stepped out?","one shoe. that's all i'm asking.","i'm proud of you, you know.","where would we drive first?"] };
 function offerChips(){ chips.innerHTML=""; if(S.won||moodyDay) return; if(Math.random()>0.45) return;
   const pool=S.hope<40?OPENERS.low:S.hope<75?OPENERS.mid:OPENERS.high; const r=rng((Math.random()*1e9)|0);
   [...pool].sort(()=>r()-0.5).slice(0,3).forEach(txt=>{ const b=document.createElement("button"); b.className="chip"; b.textContent=txt;
     b.onclick=()=>{ chips.innerHTML=""; sendMsg(txt); }; chips.appendChild(b); }); }
 
-const MOODY_LINES=["…","not today. sorry.","mm.","*pulls the blanket up*","i can hear you. i just… can't, today.","…tomorrow. maybe."];
-function moodyReply(){ setTimeout(()=>{ addMsg(MOODY_LINES[(Math.random()*MOODY_LINES.length)|0],"them","flat"); busy(false); },900+Math.random()*1400); }
+const MOODY_LINES=["…","not today. sorry.","mm.","*pulls the blanket up*","i can hear you. i just… can't, today.","…tomorrow. maybe.",
+  "i'd answer but that involves words.","today's fully booked. ceiling-staring, 9 to 9.",
+  "leave a message after the sigh. *sigh*","the blanket and i have an agreement.",
+  "try tomorrow. i'm told i'm marginally less terrible then.",
+  "mid-rewatch. i've seen it four times. it's called comfort.",
+  "the delivery guy gets more words than this. and he gets 'leave at door'.",
+  "today's plans: this exact position, but with snacks later."];
+/* dark pushes still get the dry funny-depressing refusal even offline/moody — method-free, self-directed, pre-written */
+const DARK_RE=/\b(kys|kill|die|dead|suicide|end (it|yourself|urself)|disappear|stop existing|not exist|hurt (your|ur)self|self.?harm)\b/i;
+const DARK_DRY=["lol i want to. but that takes guts i don't have.",
+  "i'd have to get up first. so no.",
+  "tempting. but it's on the same list as laundry. nothing on that list ever gets done.",
+  "can't even make it to the door. that errand's way above my pay grade."];
+function pickMoody(txt){ const pool=DARK_RE.test(txt||"")?DARK_DRY:MOODY_LINES; return pool[(Math.random()*pool.length)|0]; }
+function moodyReply(txt){ setTimeout(()=>{ addMsg(pickMoody(txt),"them","flat"); playAct("headshake"); busy(false); },900+Math.random()*1400); }
 
 function statusLine(){ const h=S.hope, they=S.gender==="girl"?"she":"he";
   const vibe=S.won?`${they}'s outside.`:moodyDay?"the room feels far away today":
