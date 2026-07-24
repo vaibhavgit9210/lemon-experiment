@@ -1431,7 +1431,9 @@ const DARK_DRY=["lol i want to. but that takes guts i don't have.",
   "i'd have to get up first. so no.",
   "tempting. but it's on the same list as laundry. nothing on that list ever gets done.",
   "can't even make it to the door. that errand's way above my pay grade."];
-function pickMoody(txt){ const pool=DARK_RE.test(txt||"")?DARK_DRY:MOODY_LINES; return pool[(Math.random()*pool.length)|0]; }
+const _lastPick=new Map(); // per-pool memory so canned lines never repeat back-to-back
+function pickFresh(pool){ let i=(Math.random()*pool.length)|0; if(pool.length>1&&i===_lastPick.get(pool)) i=(i+1)%pool.length; _lastPick.set(pool,i); return pool[i]; }
+function pickMoody(txt){ return pickFresh(DARK_RE.test(txt||"")?DARK_DRY:MOODY_LINES); }
 function moodyReply(txt){ setTimeout(()=>{ addMsg(pickMoody(txt),"them","flat"); playAct("headshake"); busy(false); },900+Math.random()*1400); }
 
 function statusLine(){ const h=S.hope, they=S.gender==="girl"?"she":"he";
@@ -1448,13 +1450,13 @@ function busy(b){ waiting=b; send.disabled=b; inp.disabled=b;
 
 async function sendMsg(text){ text=(text||"").trim(); if(!text||waiting||S.won) return;
   inp.value=""; chips.innerHTML=""; addMsg(text,"me"); S.history.push({role:"user",content:text}); S.history=S.history.slice(-30); persist();
-  if(moodyDay){ moodyReply(); return; }
+  if(moodyDay){ moodyReply(text); window._moodyPings=(window._moodyPings||0)+1; if(window._moodyPings%3===0) setTimeout(()=>sysMsg("(it's one of those days — they're not really hearing you. tomorrow, they will.)"),2600); return; }
   busy(true); let reply=null;
   try{ const r=await fetch(BRAIN,{method:"POST",headers:{"content-type":"application/json"},
     body:JSON.stringify({ state:{name:S.name,gender:S.gender,hope:S.hope,day:S.dayNum,hour:new Date().getHours(),seed:S.seed}, history:S.history }) });
     const j=await r.json(); if(j&&j.text) reply=j.text; }catch(e){}
   busy(false);
-  if(!reply){ addMsg(MOODY_LINES[(Math.random()*MOODY_LINES.length)|0],"them","flat");
+  if(!reply){ addMsg(pickFresh(MOODY_LINES),"them","flat");
     sysMsg("(they seem too tired to really talk right now — try again in a bit)"); return; }
 
   const {reply:clean, hope, acts, mood}=parseTag(reply);

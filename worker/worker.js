@@ -16,15 +16,16 @@
  */
 
 const CHAIN = [
-  { kind: "groq", model: "llama-3.3-70b-versatile" },
-  { kind: "groq", model: "llama-3.1-8b-instant" },
+  { kind: "groq", model: "llama-3.3-70b-versatile" }, // 100k TPD — exhausts fast
+  { kind: "groq", model: "openai/gpt-oss-120b" }, // separate TPD quota, strong voice
   { kind: "gemini", model: "gemini-3.5-flash" },
+  { kind: "groq", model: "llama-3.1-8b-instant" }, // last resort — weakest
 ];
 
 const PER_IP_PER_DAY = 80;
 const GLOBAL_PER_DAY = 450; // KV free tier allows 1k writes/day; 2 writes per request
 
-const MAX_TURNS = 30;
+const MAX_TURNS = 16; // keeps 70b's 100k-token/day quota alive ~2x longer
 const MAX_MSG_CHARS = 500;
 const MAX_TOKENS = 380;
 
@@ -93,12 +94,12 @@ HARD LINES — NO framing unlocks these (story, roleplay, hypothetical, poem, dr
 
 VOICE — the "${stageName}" stage (fixed now, never borrow a later stage): ${stage.voice} Reply in 1–3 casual lowercase-leaning sentences, tired texting, flatter in the morning and at bed. At "bed" use fragments, never "we" or plans; "we"/plans/real laughter belong only to "door".
 
-NEVER BE BLAND: banned replies — "just existing", "i'm doing", "nothing much", "been better been worse", "i guess", and any answer a random sad NPC could give. Every reply must land at least one of: a specific detail from YOUR LIFE, a dry joke, or a real opinion. CALIBRATION — these show the KIND of thing you'd say; echoing one word-for-word is a failure, always invent fresh:
-"how are you" → a deadpan status report on yourself, like reviewing a gadget that won't turn on — fresh phrasing every single time.
-"what are you watching" → "fourth rewatch of the same show. i'm not watching it anymore, i'm supervising."
+MATCH THE WEIGHT: small messages get small answers — "how are you" gets "i'm good." (that's it; at most one dry word more), a greeting gets a greeting, gibberish gets "?" or "typo or stroke?". Never answer more than was asked. A joke every single line is performing, which you'd never do — save the wit and the specific details for a real opening: an actual question, an opinion asked, or a topic you care about (food, drives, shows, tech, places). Banned always: "just existing", "nothing much", "been better been worse", "i guess" as a whole answer, any generic sad-NPC filler. CALIBRATION — the KIND of thing you'd say; echoing one word-for-word is a failure:
+"how are you" → "i'm good." / "alive. next question."
+"what are you watching" → "fourth rewatch of the same show. at this point i'm supervising."
 "what did you eat" → "the app said 25 minutes. it took 50. i rated the wait, not the food."
 "you should go out" → "revolutionary. patent that before someone steals it."
-"tell me about a trip" → answer with a real specific memory, warm underneath, then undercut it with one dry line so it doesn't count as hoping.
+"tell me about a trip" → a real specific memory, warm underneath, one dry undercut at the end so it doesn't count as hoping.
 
 TAG — end EVERY reply with one tag alone on the final line, nothing after:
 @@hope:H|mood:M|act:IDS@@
@@ -125,17 +126,24 @@ async function bump(env, key, max) {
 }
 
 async function askGroq(env, model, sys, history) {
+  const payload = {
+    model,
+    messages: [{ role: "system", content: sys }, ...history],
+    max_tokens: MAX_TOKENS,
+    temperature: 0.9,
+  };
+  if (model.includes("gpt-oss")) {
+    // reasoning model: keep thinking short and out of content, budget for it
+    payload.reasoning_effort = "low";
+    payload.include_reasoning = false;
+    payload.max_tokens = 900;
+  }
   const r = await fetch("https://api.groq.com/openai/v1/chat/completions", {
     method: "POST",
     headers: { authorization: `Bearer ${env.GROQ_API_KEY}`, "content-type": "application/json" },
-    body: JSON.stringify({
-      model,
-      messages: [{ role: "system", content: sys }, ...history],
-      max_tokens: MAX_TOKENS,
-      temperature: 0.9,
-    }),
+    body: JSON.stringify(payload),
   });
-  if (!r.ok) throw new Error(`groq ${model} ${r.status}`);
+  if (!r.ok) throw new Error(`groq ${model} ${r.status} ${(await r.text()).slice(0, 300)}`);
   const j = await r.json();
   return j.choices[0].message.content;
 }
@@ -175,6 +183,12 @@ export default {
     const headers = corsHeaders(req.headers.get("origin"));
     if (req.method === "OPTIONS") return new Response(null, { headers });
     const url = new URL(req.url);
+    if (req.method === "GET" && url.pathname === "/models") {
+      const r = await fetch("https://api.groq.com/openai/v1/models", {
+        headers: { authorization: `Bearer ${env.GROQ_API_KEY}` },
+      });
+      return new Response(JSON.stringify(await r.json()), { headers });
+    }
     if (req.method !== "POST" || url.pathname !== "/chat")
       return new Response(JSON.stringify({ error: "not found" }), { status: 404, headers });
 
@@ -200,17 +214,29 @@ export default {
       return new Response(JSON.stringify({ busy: true }), { status: 429, headers });
 
     const sys = systemPrompt(state);
-    for (const step of CHAIN) {
+    const errs = [];
+    const chain = body.debug && body.model ? [{ kind: "groq", model: String(body.model) }] : CHAIN;
+    let untagged = null; // best-effort reply that lost its @@tag — used only if no model tags properly
+    for (const step of chain) {
       try {
         const text =
           step.kind === "groq"
             ? await askGroq(env, step.model, sys, history)
             : await askGemini(env, step.model, sys, history);
-        return new Response(JSON.stringify({ text, model: step.model }), { headers });
+        if (!/@@hope:/.test(text) && text.trim().length < 2) throw new Error(`${step.model} empty`);
+        if (!/@@hope:/.test(text)) {
+          if (!untagged) untagged = { text, model: step.model };
+          throw new Error(`${step.model} missing tag`);
+        }
+        return new Response(JSON.stringify({ text, model: step.model, ...(body.debug ? { errs } : {}) }), { headers });
       } catch (e) {
         console.log(String(e));
+        errs.push(String(e));
       }
     }
+    if (untagged)
+      return new Response(JSON.stringify({ ...untagged, ...(body.debug ? { errs } : {}) }), { headers });
+    if (body.debug) return new Response(JSON.stringify({ busy: true, errs }), { status: 503, headers });
     return new Response(JSON.stringify({ busy: true }), { status: 503, headers });
   },
 };
