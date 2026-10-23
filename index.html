@@ -129,6 +129,8 @@
   @media (prefers-reduced-transparency:reduce){
     #chat{ background:#140e26; -webkit-backdrop-filter:none; backdrop-filter:none; }
   }
+  /* canvas text keeps the browser's default smoothing: body's antialiased would thin it on macOS */
+  canvas{-webkit-font-smoothing:auto}
 </style>
 </head>
 <body>
