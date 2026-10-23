@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#0b0817">
-<title>lemon — a small room</title>
+<title>lemon · a small room</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2064%2064%27%3E%3Crect%20width%3D%2764%27%20height%3D%2764%27%20rx%3D%2714%27%20fill%3D%27%23060a13%27%2F%3E%3Ctext%20x%3D%2732%27%20y%3D%2746%27%20font-size%3D%2738%27%20text-anchor%3D%27middle%27%3E%F0%9F%8D%8B%3C%2Ftext%3E%3C%2Fsvg%3E">
 <style>
   :root{
@@ -139,14 +139,14 @@
   <h1>LEMON</h1>
   <p>someone hasn't left their room in a while.<br>
      you are the small voice inside them that still wants to.<br>
-     be patient. be kind. there is no way to lose — only slower ways to win.</p>
+     be patient. be kind. there is no way to lose, only slower ways to win.</p>
   <div id="who">
     <div class="pick" data-g="boy"><canvas width="24" height="44"></canvas>him</div>
     <div class="pick" data-g="girl"><canvas width="24" height="44"></canvas>her</div>
   </div>
   <div id="nameRow"><input id="nameInp" maxlength="14" placeholder="give them a name" autocomplete="off"></div>
   <button id="begin">BEGIN</button>
-  <div id="introFoot">a game about gently talking someone back to the world. it is a toy, not therapy —
+  <div id="introFoot">a game about gently talking someone back to the world. it is a toy, not therapy.
   if things feel heavy for real, talk to someone you trust or a helpline (iCall: +91&nbsp;9152987821).</div>
 </div>
 
@@ -1492,14 +1492,14 @@ function busy(b){ waiting=b; send.disabled=b; inp.disabled=b;
 
 async function sendMsg(text){ text=(text||"").trim(); if(!text||waiting||S.won) return;
   inp.value=""; chips.innerHTML=""; addMsg(text,"me"); S.history.push({role:"user",content:text}); S.history=S.history.slice(-30); persist();
-  if(moodyDay){ moodyReply(text); window._moodyPings=(window._moodyPings||0)+1; if(window._moodyPings%3===0) setTimeout(()=>sysMsg("(it's one of those days — they're not really hearing you. tomorrow, they will.)"),2600); return; }
+  if(moodyDay){ moodyReply(text); window._moodyPings=(window._moodyPings||0)+1; if(window._moodyPings%3===0) setTimeout(()=>sysMsg("(it's one of those days. they're not really hearing you. tomorrow, they will.)"),2600); return; }
   busy(true); let reply=null;
   try{ const r=await fetch(BRAIN,{method:"POST",headers:{"content-type":"application/json"},
     body:JSON.stringify({ state:{name:S.name,gender:S.gender,hope:S.hope,day:S.dayNum,hour:new Date().getHours(),seed:S.seed}, history:S.history }) });
     const j=await r.json(); if(j&&j.text) reply=j.text; }catch(e){}
   busy(false);
   if(!reply){ addMsg(pickFresh(MOODY_LINES),"them","flat");
-    sysMsg("(they seem too tired to really talk right now — try again in a bit)"); return; }
+    sysMsg("(they seem too tired to really talk right now. try again in a bit)"); return; }
 
   const {reply:clean, hope, acts, mood}=parseTag(reply);
   currentMood=mood||currentMood;
@@ -1518,7 +1518,7 @@ function winGame(){ S.won=true; persist(); winPhase=0; fx.letterbox=0.01;
   const they=S.gender==="girl"?"she":"he";
   setTimeout(()=>sysMsg(`day ${S.dayNum}. ${they} put on shoes.`),1500);
   setTimeout(()=>sysMsg(`${they} opened the door. the light came in all at once.`),5000);
-  setTimeout(()=>{ sysMsg(`${S.name} stepped outside. you never lost — you just needed ${S.dayNum} day${S.dayNum>1?"s":""}.`);
+  setTimeout(()=>{ sysMsg(`${S.name} stepped outside. you never lost, you just needed ${S.dayNum} day${S.dayNum>1?"s":""}.`);
     const b=document.createElement("button"); b.className="chip"; b.textContent="⟳ begin again, with someone new";
     b.onclick=()=>{ localStorage.removeItem(SAVE_KEY); location.reload(); }; chips.appendChild(b); },9000); }
 send.addEventListener("click",()=>sendMsg(inp.value));
@@ -1557,7 +1557,7 @@ function load(){ document.getElementById("intro").classList.add("hidden");
   if(S.won){ winPhase=99; sysMsg(`${S.name} is outside now. the room keeps the light on for you.`);
     const b=document.createElement("button"); b.className="chip"; b.textContent="⟳ begin again";
     b.onclick=()=>{ localStorage.removeItem(SAVE_KEY); location.reload(); }; chips.appendChild(b); return; }
-  if(moodyDay) sysMsg(`${S.gender==="girl"?"she":"he"} won't really talk today. some days are like that. come back tomorrow — it still counts.`);
+  if(moodyDay) sysMsg(`${S.gender==="girl"?"she":"he"} won't really talk today. some days are like that. come back tomorrow. it still counts.`);
   else if(!S.history.length){ sysMsg("you are the voice inside. say hello, gently."); offerChips(); }
   else offerChips();
 }
